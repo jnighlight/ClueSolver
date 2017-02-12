@@ -94,29 +94,40 @@ uint32_t Cli::getPlayerCount()
 	return uiPlayerCount;
 }
 
-void Cli::getPlayerInfo(PlayerInfo &playerInfo)
+//Returns the number of cards that a player claimed, so we can keep the running total
+uint32_t Cli::getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, IsUser bIsUser)
+{
+	std::string sName;
+	std::string sNameQuestion;
+	std::string sCardCountQuestion;
+	if (bIsUser == IS_USER) {
+		sNameQuestion = "What's your name?\n";
+		sCardCountQuestion = "...And how many cards do you have?\n";
+	} else {
+		sNameQuestion = "What's the next player's name?\n";
+		sCardCountQuestion = "...And how many cards do they have?\n";
+	}
+
+	std::cout << sNameQuestion;
+	getValidUserString(sName);
+	std::cout << sCardCountQuestion;
+	uint32_t uiHandSize = getValidUserInt();
+
+	playerStartState.setName(sName);
+	playerStartState.setHandSize(uiHandSize);
+	return uiHandSize;
+}
+
+void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 {
 	bool bAcceptable = false;
 	do {
 		bool bFirst = true;
 		std::string sName;
 		int result = 0;
-		uint32_t uiCardCount = 0;
-		for (auto playerToPopulate : playerInfo.m_vPlayerStartStates) {
-			if (bFirst) {
-				std::cout << "What's your name?\n";
-				bFirst = false;
-			}
-			else {
-				std::cout << "What's the next player's name?\n";
-			}
-			getValidUserString(sName);
-			std::cout << "...And how many cards do they have?\n";
-			uint32_t uiHandSize = getValidUserInt();
-
-			playerToPopulate.setName(sName);
-			playerToPopulate.setHandSize(uiHandSize);
-			uiCardCount += uiHandSize;
+		uint32_t uiCardCount = getSinglePlayerInfo(playerStartState.m_userPlayer, IS_USER);
+		for (PlayerManager::PlayerStartState playerToPopulate : playerStartState.m_vPlayerStartStates) {
+			uiCardCount += getSinglePlayerInfo(playerToPopulate, IS_OTHER_PLAYER);
 		}
 		bAcceptable = uiCardCount == (Rules::TOTAL_CARDS - 3);
 		if (!bAcceptable) {

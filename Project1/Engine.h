@@ -6,7 +6,7 @@
 #include "Person.h"
 #include "Place.h"
 #include "Player.h"
-#include "PlayerInfo.h"
+#include "PlayerManager.h"
 #include "Weapon.h"
 
 class Engine
@@ -44,13 +44,11 @@ public:
 
 	Engine();
 	virtual ~Engine();
-	void parsePlayerInfo(const PlayerInfo &playerInfo);
-	uint32_t getUserCardCount() { return m_lPlayers.front()->m_uiHandSize; };
+	void parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo);
 
 private:
 
-	void createCards();
 	//This is going to be the hash for engine knowledge of card ownership. Easy to look up: Key is Card Id, Value is Player Id (with 0 meaning no ownership)
 	static std::unordered_map<unsigned int, unsigned int> s_mCardOwnership;
-	std::list<Player*> m_lPlayers;
+	PlayerManager m_playerManager;
 };

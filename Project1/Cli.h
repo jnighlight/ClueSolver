@@ -1,20 +1,24 @@
 #pragma once
 #include <cstdint>
 
-#include "PlayerInfo.h"
+#include "PlayerManager.h"
 
 class Cli
 {
 public:
+	enum IsUser {
+		IS_USER = 0,
+		IS_OTHER_PLAYER
+	};
 	Cli();
 	~Cli();
 	uint32_t getPlayerCount();
-	void getPlayerInfo(PlayerInfo &playerInfo);
+	uint32_t getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, IsUser bIsUser);
+	void getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState);
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
 private:
 	uint32_t getValidUserInt();
 	void getValidUserString(std::string &sInputString);
 	uint32_t pickACard();
-	void listsCards();
 };
 

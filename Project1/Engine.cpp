@@ -9,28 +9,9 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-	for (Player* pPlayer : m_lPlayers) {
-		if (pPlayer) {
-			delete(pPlayer);
-			pPlayer = 0;
-		}
-	}
 }
 
-void Engine::parsePlayerInfo(const PlayerInfo &playerInfo)
+void Engine::parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo)
 {
-	uint32_t uiPlayerId = 1; //We want to keep 0 to signify NO_PLAYER
-	for (auto playerStartState : playerInfo.m_vPlayerStartStates) {
-		Player* pPlayer = new Player(playerStartState.m_sName, playerStartState.m_uiHandSize);
-		m_lPlayers.push_back(pPlayer);
-	}
+	m_playerManager.parsePlayerStartStates(playerInfo);
 }
-
-/*
-void Engine::createCards()
-{
-	for (auto &sPerson : s_lPeople) {
-	}
-}
-*/
-
