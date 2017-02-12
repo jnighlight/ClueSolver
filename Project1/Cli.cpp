@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <set>
 #include "Cli.h"
 #include "Rules.h"
 
@@ -19,21 +20,43 @@ Cli::~Cli()
 
 void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 {
+	//Using a set here so I don't have to deal with iterating for a duplicate check each time
+	std::set<uint32_t> vClaimedCards;
 	for (uint32_t i = 0; i < uiUserCardCount; i++)
 	{
+		uint32_t uiSelection = 0;
 		bool bAccepted = true;
 		do {
-			listCards();
-			std::cout << "Enter the number of a card you have";
-			uint32_t uiSelection = getValidUserInt();
-			if (checkAlreadyOwned()) {
+			uint32_t uiSelection = pickACard();
+			//Don't want any duplicate numbers
+			bAccepted = (vClaimedCards.find(uiSelection) == vClaimedCards.end());
+			if (!bAccepted) {
 				std::cout << "I think you already have claimed that card. Try again...";
-				bAccepted = false;
-			} else {
-				bAccepted = true;
 			}
-		} while (bAccepted);
+		} while (!bAccepted);
+		vClaimedCards.insert(uiSelection);
 	}
+	for each (uint32_t uiClaimedCard in vClaimedCards)
+	{
+		vCards.push_back(uiClaimedCard);
+	}
+	std::cout << "Selecting Cards finished!";
+}
+
+uint32_t Cli::pickACard()
+{
+	uint32_t uiSelection = 0;
+	bool bGoodCard = true;
+	do {
+		Rules::listCards();
+		std::cout << "Enter the number of a card you have";
+		uiSelection = getValidUserInt();
+		bGoodCard = Rules::isAValidCard(uiSelection);
+		if (!bGoodCard) {
+				std::cout << "That's not an acceptable card. Try again.";
+		}
+	} while (!bGoodCard);
+	return uiSelection;
 }
 
 void Cli::getValidUserString(std::string &sInputString)

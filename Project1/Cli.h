@@ -14,5 +14,7 @@ public:
 private:
 	uint32_t getValidUserInt();
 	void getValidUserString(std::string &sInputString);
+	uint32_t pickACard();
+	void listsCards();
 };
 
