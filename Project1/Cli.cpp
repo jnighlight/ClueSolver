@@ -49,7 +49,7 @@ uint32_t Cli::pickACard()
 	bool bGoodCard = true;
 	do {
 		Rules::listCards();
-		std::cout << "Enter the number of a card you have";
+		std::cout << "Enter the number of a card you have: ";
 		uiSelection = getValidUserInt();
 		bGoodCard = Rules::isAValidCard(uiSelection);
 		if (!bGoodCard) {

@@ -23,21 +23,27 @@ bool Rules::validPlayerCount(uint32_t uiPlayerCount)
 void Rules::listCards()
 {
 	uint32_t uiSelectionCounter = 1;
+	std::cout << "Persons:\n";
 	for each (std::string sPersonCard in s_lPeople)
 	{
 		std::cout << uiSelectionCounter << ". " << sPersonCard;
+		std::cout << "  ";
 		++uiSelectionCounter;
 	}
 	std::cout << "\n";
+	std::cout << "Weapons:\n";
 	for each (std::string sWeaponCard in s_lWeapons)
 	{
 		std::cout << uiSelectionCounter << ". " << sWeaponCard;
+		std::cout << "  ";
 		++uiSelectionCounter;
 	}
 	std::cout << "\n";
+	std::cout << "Places:\n";
 	for each (std::string sPlaceCard in s_lPlaces)
 	{
 		std::cout << uiSelectionCounter << ". " << sPlaceCard;
+		std::cout << "  ";
 		++uiSelectionCounter;
 	}
 	std::cout << "\n";
