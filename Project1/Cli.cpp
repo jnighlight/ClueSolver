@@ -94,7 +94,7 @@ uint32_t Cli::getPlayerCount()
 	return uiPlayerCount;
 }
 
-void Cli::getPlayerInfo(PlayerManager::PlayerInfo &playerInfo)
+void Cli::getPlayerInfo(PlayerInfo &playerInfo)
 {
 	bool bAcceptable = false;
 	do {

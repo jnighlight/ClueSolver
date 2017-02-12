@@ -119,7 +119,7 @@
     <ClInclude Include="Person.h" />
     <ClInclude Include="Place.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
@@ -133,7 +133,7 @@
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Place.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="PlayerInfo.cpp" />
     <ClCompile Include="Rules.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>

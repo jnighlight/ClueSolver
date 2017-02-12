@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-#include "PlayerManager.h"
+#include "PlayerInfo.h"
 
 class Cli
 {
@@ -9,7 +9,7 @@ public:
 	Cli();
 	~Cli();
 	uint32_t getPlayerCount();
-	void getPlayerInfo(PlayerManager::PlayerInfo &playerInfo);
+	void getPlayerInfo(PlayerInfo &playerInfo);
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
 private:
 	uint32_t getValidUserInt();
