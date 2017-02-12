@@ -35,8 +35,10 @@ public:
 
 	PlayerManager() {};
 	PlayerManager(const PlayerStartStates &playerStartStates);
-	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	virtual ~PlayerManager();
+
+	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
+	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
 
 	Player m_userPlayer;
 	std::vector<Player> m_otherPlayers;

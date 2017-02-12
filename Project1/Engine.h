@@ -45,6 +45,7 @@ public:
 	Engine();
 	virtual ~Engine();
 	void parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo);
+	void setUserCards(const std::vector<uint32_t> &vPlayerCards);
 
 private:
 

@@ -9,6 +9,10 @@ Game::Game()
 {
 }
 
+Game::~Game()
+{
+}
+
 void Game::start()
 {
 	bool bSolved = false;
@@ -20,9 +24,16 @@ void Game::start()
 	uint32_t uiUserCardCount = playerStartStates.getUserPlayerHandSize();
 	m_engine.parsePlayerInfo(playerStartStates);
 	m_cli.getUserCards(uiUserCardCount, vPlayerCards);
-	/*
-	playerInfo.m_vPlayerStartStates[0]
-	m_engine.setUserCards();
+	m_engine.setUserCards(vPlayerCards);
+	//We are now in a state that requires players to start making guesses.
+	//This will be our display break, where we will supply our display information
+	//	to the CLI, and let it display until it recieves a guess, which we will send
+	//	to the engine for processing
+}
+
+/*
+void Game::guessLoop()
+{
 	Guess guess;
 	GameState gameState;
 	while (!bSolved) {
@@ -31,8 +42,5 @@ void Game::start()
 		m_cli.display(gameState);
 		guess.clear();
 	}
-	*/
 }
-Game::~Game()
-{
-}
+*/

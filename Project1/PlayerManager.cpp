@@ -16,6 +16,13 @@ void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartS
 	Player m_userPlayer;
 }
 
+void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards)
+{
+	for (uint32_t uiCard : vPlayerCards)
+	{
+		m_userPlayer.addCard(uiCard);
+	}
+}
 
 PlayerManager::~PlayerManager()
 {
