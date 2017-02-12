@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 
 const uint32_t Rules::MAX_PLAYERS = 6;
 const uint32_t Rules::MIN_PLAYERS = 3;

@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "Guess.h"
 #include "Person.h"
 #include "Place.h"
 #include "Player.h"
@@ -46,6 +47,7 @@ public:
 	virtual ~Engine();
 	void parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo);
 	void setUserCards(const std::vector<uint32_t> &vPlayerCards);
+	void processGuess(const Guess &guess);
 
 private:
 

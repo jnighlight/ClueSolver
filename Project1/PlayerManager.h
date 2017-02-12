@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+
+#include "Guess.h"
 #include "Player.h"
 
 class PlayerManager
@@ -39,8 +41,19 @@ public:
 
 	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
+	void processGuess(const Guess &guess);
+	void addGuess(const std::string &sSolver,
+				  uint32_t uiPerson,
+				  uint32_t uiPlace,
+				  uint32_t uiWeapon);
 
 	Player m_userPlayer;
 	std::vector<Player> m_otherPlayers;
+
+private:
+	Player* getPlayer(const std::string &sPlayerName);
+	uint32_t removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessCards);
+	uint32_t getOnlyCard(const std::vector<uint32_t> &vGuessCards);
+	bool isOwned(uint32_t uiCard);
 };
 
