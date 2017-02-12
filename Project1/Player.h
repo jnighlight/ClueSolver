@@ -6,6 +6,7 @@
 class Player
 {
 public:
+	Player();
 	Player(std::string sName, unsigned int uiHandSize);
 	virtual ~Player();
 

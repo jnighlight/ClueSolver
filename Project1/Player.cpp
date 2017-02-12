@@ -2,6 +2,11 @@
 
 
 
+Player::Player()
+	:m_sName("")
+	,m_uiHandSize(0)
+{}
+
 Player::Player(std::string sName, unsigned int uiHandSize)
 	:m_sName(sName)
 	,m_uiHandSize(uiHandSize)
