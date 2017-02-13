@@ -23,7 +23,15 @@ void Engine::setUserCards(const std::vector<uint32_t> &vPlayerCards)
 
 void Engine::processGuess(const Guess &guess)
 {
-	if (guess.m_bSolved) {
-		m_playerManager.addGuess(guess.m_sStopper, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
+	for (std::string sPassedPlayers : guess.m_svPasses)
+	{
+		m_playerManager.addPassedGuess(sPassedPlayers, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
 	}
+	if (guess.m_bSolved) {
+		m_playerManager.addSolvedGuess(guess.m_sStopper, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
+	} else {
+		//TODO: Have to add case for not solved. IE all answers are EITHER owned by guesser
+		//	OR they are the actual answer. Surely there's some information to be gleaned there?
+	}
+	//checkForNewSolutions(); //This should be a sort of recursive call. If
 }

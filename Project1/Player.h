@@ -7,6 +7,8 @@
 #include "Card.h"
 #include "Guess.h"
 
+class PlayerManager;
+
 class Player
 {
 public:
@@ -23,6 +25,10 @@ public:
 		uint32_t m_uiPlace;
 		uint32_t m_uiPerson;
 		uint32_t m_uiWeapon;
+
+		bool isSolved();
+		uint32_t getSolved();
+		bool isEmpty() { return (m_uiPerson == 0 && m_uiPlace == 0 && m_uiWeapon == 0); }
 	};
 
 	Player() {};
@@ -31,15 +37,19 @@ public:
 
 	std::string m_sName;
 	unsigned int m_uiHandSize;
-	std::set<unsigned int> m_vOwnedCards;
-	std::set<unsigned int> m_vDefinitelyNotOwnedCards;
+	std::set<uint32_t> m_vOwnedCards;
+	std::set<uint32_t> m_vDefinitelyNotOwnedCards;
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 
 	void addCard(uint32_t uiCardToAdd);
 	void addGuess(const std::vector<uint32_t> &vCards);
+	void addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards);
+	void checkForSolutions(PlayerManager* pPlayerManager);
+	bool processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
 
-	bool ownsCard(uint32_t uiCard);
-	bool ownsOneOfTheseCards(const std::vector<uint32_t> &vCards);
+	bool ownsCard(uint32_t uiCard) const;
+	bool ownsOneOfTheseCards(const std::vector<uint32_t> &vCards) const;
+
 	void setName(std::string sName) { m_sName = sName; };
 	void setHandSize(uint32_t uiHandSize) { m_uiHandSize = uiHandSize; };
 };

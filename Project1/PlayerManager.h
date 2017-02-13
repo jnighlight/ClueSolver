@@ -41,11 +41,17 @@ public:
 
 	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
-	void processGuess(const Guess &guess);
-	void addGuess(const std::string &sSolver,
+	void addSolvedGuess(const std::string &sSolver,
 				  uint32_t uiPerson,
 				  uint32_t uiPlace,
 				  uint32_t uiWeapon);
+	void addPassedGuess(const std::string &sPasser,
+						uint32_t uiPerson,
+						uint32_t uiPlace,
+						uint32_t uiWeapon);
+	void checkForNewSolutions();
+	void cardClaimedBlast(uint32_t uiClaimedCard);
+	bool isOwned(uint32_t uiCard);
 
 	Player m_userPlayer;
 	std::vector<Player> m_otherPlayers;
@@ -54,6 +60,5 @@ private:
 	Player* getPlayer(const std::string &sPlayerName);
 	uint32_t removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessCards);
 	uint32_t getOnlyCard(const std::vector<uint32_t> &vGuessCards);
-	bool isOwned(uint32_t uiCard);
 };
 

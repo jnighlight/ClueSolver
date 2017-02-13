@@ -6,6 +6,10 @@ PlayerManager::PlayerManager(const PlayerStartStates &playerStartStates)
 	parsePlayerStartStates(playerStartStates);
 }
 
+PlayerManager::~PlayerManager()
+{
+}
+
 void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartStates)
 {
 	m_userPlayer.setName(playerStartStates.m_userPlayer.m_sName);
@@ -25,19 +29,13 @@ void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards
 	}
 }
 
-void PlayerManager::processGuess(const Guess &guess)
-{
-	if (guess.m_bSolved) {
-		addGuess(guess.m_sStopper, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
-	} else { //...REALLY not sure what to do here. All of the cards are either owned by guesser or the answer...
-
-	}
-	//foreach passed players: add pass (IE, they *DONT* have those cards)
-}
-
 Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 {
-	for (Player player : m_otherPlayers)
+	if (m_userPlayer.m_sName.compare(sPlayerName))
+	{
+		return &m_userPlayer;
+	}
+	for (Player &player : m_otherPlayers)
 	{
 		if (player.m_sName.compare(sPlayerName) == 0) {
 			return &player;
@@ -50,6 +48,10 @@ Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 
 bool PlayerManager::isOwned(uint32_t uiCard)
 {
+	if (m_userPlayer.ownsCard(uiCard))
+	{
+		return true;
+	}
 	for (Player player : m_otherPlayers)
 	{
 		if (player.ownsCard(uiCard))
@@ -85,9 +87,11 @@ uint32_t PlayerManager::getOnlyCard(const std::vector<uint32_t> &vGuessCards)
 			return uiCard;
 		}
 	}
+	std::cout << "PlayerManager::" << __FUNCTION__ << ", No cards found!";
+	return 0;
 }
 
-void PlayerManager::addGuess(const std::string &sSolver,
+void PlayerManager::addSolvedGuess(const std::string &sSolver,
 						     uint32_t uiPerson,
 							 uint32_t uiPlace,
 							 uint32_t uiWeapon)
@@ -102,16 +106,40 @@ void PlayerManager::addGuess(const std::string &sSolver,
 	//If the Solver already owns one of these cards, we CAN'T infer more information from
 	//	the solution of this guess (But we can infer info from who it passed)
 	if (!pPlayer->ownsOneOfTheseCards(vGuessCards)) {
+		removeOwnedCardsFromGuess(vGuessCards);
+		/*
+		This may be extra stuff. Just add the details, then do an update pass
 		uint32_t uiCardsLeftInGuess = removeOwnedCardsFromGuess(vGuessCards);
 		if (uiCardsLeftInGuess == 1) {
 			uint32_t uiOnlyCardLeft = getOnlyCard(vGuessCards);
 			pPlayer->addCard(uiOnlyCardLeft);
+			//TODO: Implement the blast function
+			cardClaimedBlast(uiOnlyCardLeft);
 		} else {
+		*/
 			pPlayer->addGuess(vGuessCards);
-		}
+		//}
 	}
 }
 
-PlayerManager::~PlayerManager()
+void PlayerManager::addPassedGuess(const std::string &sPasser,
+						     uint32_t uiPerson,
+							 uint32_t uiPlace,
+							 uint32_t uiWeapon)
+{
+	Player* pPlayer = getPlayer(sPasser);
+	if (!pPlayer) {
+		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
+		return;
+	}
+	std::vector<uint32_t> vGuessCards = { uiPerson, uiPlace, uiWeapon };
+	pPlayer->addNotOwnedCards(vGuessCards);
+}
+
+void PlayerManager::checkForNewSolutions()
+{
+}
+
+void PlayerManager::cardClaimedBlast(uint32_t uiClaimedCard)
 {
 }
