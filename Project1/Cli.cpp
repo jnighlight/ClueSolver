@@ -37,7 +37,7 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 		} while (!bAccepted);
 		vClaimedCards.insert(uiSelection);
 	}
-	for each (uint32_t uiClaimedCard in vClaimedCards)
+	for (uint32_t uiClaimedCard : vClaimedCards)
 	{
 		vCards.push_back(uiClaimedCard);
 	}

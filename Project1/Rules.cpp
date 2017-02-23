@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <string>
 #include <stdlib.h>
 
 const uint32_t Rules::MAX_PLAYERS = 6;
@@ -25,7 +24,7 @@ void Rules::listCards()
 {
 	uint32_t uiSelectionCounter = 1;
 	std::cout << "Persons:\n";
-	for each (std::string sPersonCard in s_lPeople)
+	for (std::string sPersonCard : s_lPeople)
 	{
 		std::cout << uiSelectionCounter << ". " << sPersonCard;
 		std::cout << "  ";
@@ -33,7 +32,7 @@ void Rules::listCards()
 	}
 	std::cout << "\n";
 	std::cout << "Weapons:\n";
-	for each (std::string sWeaponCard in s_lWeapons)
+	for (std::string sWeaponCard : s_lWeapons)
 	{
 		std::cout << uiSelectionCounter << ". " << sWeaponCard;
 		std::cout << "  ";
@@ -41,7 +40,7 @@ void Rules::listCards()
 	}
 	std::cout << "\n";
 	std::cout << "Places:\n";
-	for each (std::string sPlaceCard in s_lPlaces)
+	for (std::string sPlaceCard : s_lPlaces)
 	{
 		std::cout << uiSelectionCounter << ". " << sPlaceCard;
 		std::cout << "  ";

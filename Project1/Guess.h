@@ -2,6 +2,8 @@
 #ifndef GUESS_H
 #define GUESS_H
 #include <vector>
+#include <string>
+#include <cstdint>
 
 class Guess
 {

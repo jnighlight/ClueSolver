@@ -10,10 +10,10 @@ class PlayerManager
 public:
 	struct PlayerStartState {
 
-		PlayerStartState::PlayerStartState()
+		PlayerStartState()
 		{};
 
-		PlayerStartState::PlayerStartState(unsigned int uiHandSize, std::string sName)
+		PlayerStartState(unsigned int uiHandSize, std::string sName)
 			:m_uiHandSize(uiHandSize)
 			,m_sName(sName)
 		{};
