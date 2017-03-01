@@ -11,16 +11,18 @@ Player::~Player()
 {
 }
 
-void Player::addGuess(const std::vector<uint32_t> &vCards)
+bool Player::addGuess(const std::vector<uint32_t> &vCards)
 {
-	if (vCards.size() == 3)
+	if (vCards.size() != 3)
 	{
-		Player::AnsweredGuess answeredGuess(vCards[0], vCards[1], vCards[2]);
-		m_lAnsweredGuesses.push_back(answeredGuess);
-	} else {
 		std::cout << "Player::" << __FUNCTION__ << ", Incoming guess of incorrect size: ";
 		std::cout << vCards.size();
+        return false;
 	}
+
+    Player::AnsweredGuess answeredGuess(vCards.at(0), vCards.at(1), vCards.at(2));
+    m_lAnsweredGuesses.push_back(answeredGuess);
+    return true;
 }
 
 void Player::addCard(uint32_t uiCardToAdd)

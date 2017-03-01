@@ -46,7 +46,7 @@ public:
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 
 	void addCard(uint32_t uiCardToAdd);
-	void addGuess(const std::vector<uint32_t> &vCards);
+	bool addGuess(const std::vector<uint32_t> &vCards);
 	void addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards);
 	void checkForSolutions(PlayerManager* pPlayerManager);
 	bool processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
