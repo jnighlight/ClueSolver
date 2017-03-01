@@ -10,10 +10,6 @@ class PlayerTest : public ::testing::Test
             ,m_uiHandSize(5)
             ,m_player(m_sName, m_uiHandSize)
         {
-            /*
-            m_spRaindrop.reset(new CdnRaindrop());
-            populateRaindrop(m_spRaindrop, m_sHost, m_sEhm);
-            */
         }
 
         //Called after every test
@@ -34,8 +30,16 @@ TEST_F(PlayerTest, playerOwnsGivenCard)
     EXPECT_FALSE(m_player.ownsCard(11));
 };
 
-TEST_F(PlayerTest, addedRaindropIsStoredCorrectlyInHash)
+TEST_F(PlayerTest, vectorOfWrongSizeCausesAddGuessToFail)
 {
+    std::vector<uint32_t> vCards;
+    vCards.push_back(1);
+    EXPECT_FALSE(m_player.addGuess(vCards));
+    vCards.push_back(2);
+    EXPECT_FALSE(m_player.addGuess(vCards));
+    vCards.push_back(3);
+    vCards.push_back(4);
+    EXPECT_FALSE(m_player.addGuess(vCards));
 };
 
 class AnsweredGuessTest : public ::testing::Test
