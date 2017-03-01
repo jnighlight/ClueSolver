@@ -42,6 +42,16 @@ TEST_F(PlayerTest, vectorOfWrongSizeCausesAddGuessToFail)
     EXPECT_FALSE(m_player.addGuess(vCards));
 };
 
+TEST_F(PlayerTest, addGuessAddsGuess)
+{
+    std::vector<uint32_t> vCards;
+    vCards.push_back(1);
+    vCards.push_back(2);
+    vCards.push_back(3);
+    EXPECT_TRUE(m_player.addGuess(vCards));
+    EXPECT_EQ(1, m_player.m_lAnsweredGuesses.size());
+};
+
 class AnsweredGuessTest : public ::testing::Test
 {
     protected:
