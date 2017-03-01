@@ -2,8 +2,6 @@
 #include "Main.h"
 #include "Game.h"
 
-
-
 Main::Main()
 {
 }

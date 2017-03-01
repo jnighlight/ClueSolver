@@ -13,7 +13,11 @@ class Player
 {
 public:
 	struct AnsweredGuess {
-		AnsweredGuess() {};
+		AnsweredGuess()
+			:m_uiPlace(0)
+			,m_uiPerson(0)
+			,m_uiWeapon(0)
+        {};
 		AnsweredGuess(uint32_t uiPlace, uint32_t uiPerson, uint32_t uiWeapon)
 			:m_uiPlace(uiPlace)
 			,m_uiPerson(uiPerson)
