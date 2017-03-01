@@ -130,6 +130,12 @@ bool Player::AnsweredGuess::isSolved()
 
 uint32_t Player::AnsweredGuess::getSolved()
 {
+    //There's a little bit of code duplication here. We'll likely call this before getting solved anyways.
+    //But having this check helps me sleep at night
+    if (!isSolved())
+    {
+        return 0;
+    }
 	if (m_uiPlace != 0)
 	{
 		return m_uiPlace;
