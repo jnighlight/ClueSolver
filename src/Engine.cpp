@@ -34,4 +34,5 @@ void Engine::processGuess(const Guess &guess)
 		//	OR they are the actual answer. Surely there's some information to be gleaned there?
 	}
 	m_playerManager.updatePlayerState();
+    //return m_playerManager.isSolved();
 }

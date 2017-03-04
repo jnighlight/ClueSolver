@@ -1,5 +1,6 @@
 #include "Rules.h"
 
+#include <ncurses.h>
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
@@ -23,30 +24,33 @@ bool Rules::validPlayerCount(uint32_t uiPlayerCount)
 void Rules::listCards()
 {
 	uint32_t uiSelectionCounter = 1;
-	std::cout << "Persons:\n";
+	printw("Persons:\n");
 	for (std::string sPersonCard : s_lPeople)
 	{
-		std::cout << uiSelectionCounter << ". " << sPersonCard;
-		std::cout << "  ";
+		printw("%d. ",uiSelectionCounter);
+        printw(sPersonCard.c_str());
+		printw(" ");
 		++uiSelectionCounter;
 	}
-	std::cout << "\n";
-	std::cout << "Weapons:\n";
+	printw("\n");
+	printw("Weapons:\n");
 	for (std::string sWeaponCard : s_lWeapons)
 	{
-		std::cout << uiSelectionCounter << ". " << sWeaponCard;
-		std::cout << "  ";
+		printw("%d. ",uiSelectionCounter);
+		printw(sWeaponCard.c_str());
+		printw(" ");
 		++uiSelectionCounter;
 	}
-	std::cout << "\n";
-	std::cout << "Places:\n";
+	printw("\n");
+	printw("Places:\n");
 	for (std::string sPlaceCard : s_lPlaces)
 	{
-		std::cout << uiSelectionCounter << ". " << sPlaceCard;
-		std::cout << "  ";
+		printw("%d. ",uiSelectionCounter);
+		printw(sPlaceCard.c_str());
+		printw(" ");
 		++uiSelectionCounter;
 	}
-	std::cout << "\n";
+	printw("\n");
 }
 
 bool Rules::isAValidCard(uint32_t uiCardNumber)

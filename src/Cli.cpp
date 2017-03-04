@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <ncurses.h>
 
 #include "Cli.h"
 #include "Rules.h"
@@ -30,9 +31,11 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 		do {
 			uint32_t uiSelection = pickACard();
 			//Don't want any duplicate numbers
+            //TODO: This does not work...wat?
 			bAccepted = (vClaimedCards.find(uiSelection) == vClaimedCards.end());
 			if (!bAccepted) {
-				std::cout << "I think you already have claimed that card. Try again...";
+                printw("I think you already have claimed that card. Try again...\n");
+                refresh();
 			}
 		} while (!bAccepted);
 		vClaimedCards.insert(uiSelection);
@@ -41,8 +44,15 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 	{
 		vCards.push_back(uiClaimedCard);
 	}
-	std::cout << "Selecting Cards finished!";
+    printw("Selecting Cards finished!\n");
+    refresh();
 }
+
+/*
+uint32_t Cli::pickAPlayer()
+{
+}
+*/
 
 uint32_t Cli::pickACard()
 {
@@ -50,19 +60,24 @@ uint32_t Cli::pickACard()
 	bool bGoodCard = true;
 	do {
 		Rules::listCards();
-		std::cout << "Enter the number of a card you have: ";
+		printw("Enter the number of a card you have: ");
+        refresh();
 		uiSelection = getValidUserInt();
 		bGoodCard = Rules::isAValidCard(uiSelection);
 		if (!bGoodCard) {
-				std::cout << "That's not an acceptable card. Try again.";
+            printw("That's not an acceptable card. Try again.");
+            refresh();
 		}
 	} while (!bGoodCard);
 	return uiSelection;
 }
 
-void Cli::getValidUserString(std::string &sInputString)
+void Cli::getValidUserString(std::string &sInputString, uint32_t uiMaxChars /* = 20 */)
 {
-	std::getline(std::cin, sInputString);
+    sInputString.clear();
+    char str[uiMaxChars + 1];
+    getnstr(str, uiMaxChars);
+    sInputString = str;
 }
 
 uint32_t Cli::getValidUserInt()
@@ -72,9 +87,10 @@ uint32_t Cli::getValidUserInt()
 	bool bFirst = true;
 	do {
 		if (!bFirst) {
-			std::cout << "Hm, it looks like that wasn't a number. Or it was 0. Which is baaasically not a number. Try again.\n";
+            printw("Hm, it looks like that wasn't a number. Or it was 0. Which is baaasically not a number. Try again.\n");
+			//std::cout << "Hm, it looks like that wasn't a number. Or it was 0. Which is baaasically not a number. Try again.\n";
 		}
-		std::getline(std::cin, sUserInput);
+        getValidUserString(sUserInput);
 		std::stringstream strStream(sUserInput);
 		strStream >> uiUserInt;
 		bFirst = false;
@@ -84,14 +100,17 @@ uint32_t Cli::getValidUserInt()
 
 uint32_t Cli::getPlayerCount()
 {
-	std::string sUserInput;
-	std::cout << "How many people are playing tonight?\n";
-
+    printw("How many people are playing tonight?\n");
+    refresh();
+    std::string sResponse;
 	uint32_t uiPlayerCount = getValidUserInt();
+    //printw("you printed: %s", sResponse.c_str());
 	while (!Rules::validPlayerCount(uiPlayerCount)) {
-		std::cout << "Clue is best played with between " << unsigned(Rules::MIN_PLAYERS) << " and " << unsigned(Rules::MAX_PLAYERS) << " players. Try again!\n";
+        printw("Clue is best played with between %d and %d players. Try again!\n",unsigned(Rules::MIN_PLAYERS), unsigned(Rules::MAX_PLAYERS));
+        refresh();
 		uiPlayerCount = getValidUserInt();
 	}
+
 	return uiPlayerCount;
 }
 
@@ -109,9 +128,9 @@ uint32_t Cli::getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartSt
 		sCardCountQuestion = "...And how many cards do they have?\n";
 	}
 
-	std::cout << sNameQuestion;
+	printw(sNameQuestion.c_str());
 	getValidUserString(sName);
-	std::cout << sCardCountQuestion;
+	printw(sCardCountQuestion.c_str());
 	uint32_t uiHandSize = getValidUserInt();
 
 	playerStartState.setName(sName);
@@ -127,17 +146,46 @@ void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 		std::string sName;
 		int result = 0;
 		uint32_t uiCardCount = getSinglePlayerInfo(playerStartState.m_userPlayer, IS_USER);
-		for (PlayerManager::PlayerStartState playerToPopulate : playerStartState.m_vPlayerStartStates) {
+		for (PlayerManager::PlayerStartState &playerToPopulate : playerStartState.m_vPlayerStartStates) {
 			uiCardCount += getSinglePlayerInfo(playerToPopulate, IS_OTHER_PLAYER);
 		}
 		bAcceptable = uiCardCount == (Rules::TOTAL_CARDS - 3);
 		if (!bAcceptable) {
-			std::cout << "I think you made a mistake in your math there...\n";
-			std::cout << "You said that, amongst hands, there were " << unsigned(uiCardCount) << " cards\n";
-			std::cout << "There are " << Rules::TOTAL_CARDS << " cards in this game (3 of which should be hidden, not in any hands).\n";
-			std::cout << "Let's take it from the top.\n";
+			printw("I think you made a mistake in your math there...\n");
+			printw("You said that, amongst hands, there were %d cards\n", unsigned(uiCardCount));
+			printw("There are %d cards in this game (3 of which should be hidden, not in any hands).\n", Rules::TOTAL_CARDS);
+			printw("Let's take it from the top.\n");
+            getch();
+            clear();
+            refresh();
 		} else {
-			std::cout << "Alright! That's everyone!\n";
+            clear();
+			printw("Alright! That's everyone!\n");
+            refresh();
 		}
 	} while (!bAcceptable);
+}
+
+/*
+void Cli::getGuess(Guess &guess)
+{
+    std::cout << "Time to add guesses! Which player made the guess?\n";
+    std::cout << "What cards were in the guess?\n";
+        uint32_t uiFirstCard = pickACard();
+        uint32_t uiSecondCard = pickACard();
+        uint32_t uiThirdCard = pickACard();
+        Rules::ensureOneCardOfEachType(uiFirstCard, uiSecondCard, uiThirdCard);
+        guess.addCard(uiFirstCard, Rules::getCardType(uiFirstCard));
+        guess.addCard(uiSecondCard, Rules::getCardType(uiSecondCard));
+        guess.addCard(uiThirdCard, Rules::getCardType(uiThirdCard));
+    std::cout << "Which players passed on the guess?\n";
+    std::cout << "Which player solved the guess?\n";
+}
+*/
+
+//This is nasty ladies and gentlemen. I want to replace this with curse soon. But for now, consider it
+//  technical debt
+void Cli::clearScreen()
+{
+    std::cout << std::string(100, '\n');
 }

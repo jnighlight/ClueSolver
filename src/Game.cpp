@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include "Game.h"
 #include "Cli.h"
 #include "Engine.h"
@@ -7,10 +9,12 @@
 
 Game::Game()
 {
+    initscr();
 }
 
 Game::~Game()
 {
+    endwin();
 }
 
 void Game::start()
@@ -29,18 +33,19 @@ void Game::start()
 	//This will be our display break, where we will supply our display information
 	//	to the CLI, and let it display until it recieves a guess, which we will send
 	//	to the engine for processing
+    guessLoop();
 }
 
-/*
 void Game::guessLoop()
 {
+    /*
 	Guess guess;
 	GameState gameState;
 	while (!bSolved) {
 		m_cli.getGuess(guess);
-		bSolved = m_engine.parseGuess(guess, gameState);
-		m_cli.display(gameState);
+		bSolved = m_engine.processGuess(guess);
+		m_cli.display(m_engine.getGameState());
 		guess.clear();
 	}
+    */
 }
-*/

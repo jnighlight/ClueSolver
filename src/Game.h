@@ -8,6 +8,7 @@ public:
 	~Game();
 
 	void start();
+    void guessLoop();
 
 private:
 	Cli m_cli;

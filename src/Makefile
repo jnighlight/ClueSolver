@@ -11,9 +11,9 @@ program_CXX_OBJS := ${program_CXX_SRCS:.cpp=.o}
 program_TEST_OBJS := ${program_TEST_SRCS:.cpp=.o}
 program_OBJS := $(program_C_OBJS) $(program_CXX_OBJS)
 
-program_INCLUDE_DIRS := /usr/local/include/
-program_LIBRARY_DIRS := /usr/local/lib/
-program_LIBRARIES :=
+program_INCLUDE_DIRS := /usr/local/include/ /usr/include/
+program_LIBRARY_DIRS := /usr/local/lib/ /usr/lib/
+program_LIBRARIES := ncurses
 
 CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir)) -std=c++11
 LDFLAGS += $(foreach librarydir,$(program_LIBRARY_DIRS),-L$(librarydir))
@@ -24,7 +24,7 @@ LDFLAGS += $(foreach library,$(program_LIBRARIES),-l$(library))
 all: $(program_NAME)
 
 $(program_NAME): $(program_OBJS)
-	    $(LINK.cc) $(program_OBJS) -o $(program_NAME)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(program_OBJS) $(LDFLAGS) -o $(program_NAME)
 
 gtest: $(program_TEST_OBJS) $(program_TEST_FILES)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(program_TEST_OBJS) $(LDFLAGS) -o gtest 
