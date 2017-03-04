@@ -33,5 +33,5 @@ void Engine::processGuess(const Guess &guess)
 		//TODO: Have to add case for not solved. IE all answers are EITHER owned by guesser
 		//	OR they are the actual answer. Surely there's some information to be gleaned there?
 	}
-	//checkForNewSolutions(); //This should be a sort of recursive call. If
+	m_playerManager.updatePlayerState();
 }

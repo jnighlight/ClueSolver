@@ -48,8 +48,16 @@ public:
 	void addCard(uint32_t uiCardToAdd);
 	bool addGuess(const std::vector<uint32_t> &vCards);
 	void addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards);
-	void checkForSolutions(PlayerManager* pPlayerManager);
-	bool processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
+    bool isDefinitelyNotOwned(uint32_t uiCard);
+	bool checkForSolutions(PlayerManager* pPlayerManager);
+
+    enum guessState {
+        eNotSolved = 0,
+        eSolved,
+        eTrash
+    };
+
+    Player::guessState processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
 
 	bool ownsCard(uint32_t uiCard) const;
 	bool ownsOneOfTheseCards(const std::vector<uint32_t> &vCards) const;

@@ -41,6 +41,7 @@ public:
 
 	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
+    void updatePlayerState();
 	void addSolvedGuess(const std::string &sSolver,
 				  uint32_t uiPerson,
 				  uint32_t uiPlace,

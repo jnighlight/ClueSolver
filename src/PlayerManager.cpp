@@ -14,7 +14,7 @@ void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartS
 {
 	m_userPlayer.setName(playerStartStates.m_userPlayer.m_sName);
 	m_userPlayer.setHandSize(playerStartStates.m_userPlayer.m_uiHandSize);
-	for (PlayerManager::PlayerStartState otherPlayerStartState : playerStartStates.m_vPlayerStartStates)
+	for (const PlayerManager::PlayerStartState &otherPlayerStartState : playerStartStates.m_vPlayerStartStates)
 	{
 		Player otherPlayer(otherPlayerStartState.m_sName, otherPlayerStartState.m_uiHandSize);
 	}
@@ -23,7 +23,7 @@ void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartS
 
 void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards)
 {
-	for (uint32_t uiCard : vPlayerCards)
+	for (const uint32_t uiCard : vPlayerCards)
 	{
 		m_userPlayer.addCard(uiCard);
 	}
@@ -52,7 +52,7 @@ bool PlayerManager::isOwned(uint32_t uiCard)
 	{
 		return true;
 	}
-	for (Player player : m_otherPlayers)
+	for (const Player &player : m_otherPlayers)
 	{
 		if (player.ownsCard(uiCard))
 		{
@@ -80,7 +80,7 @@ uint32_t PlayerManager::removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessC
 //Assumes that only one card in the incoming vector is NOT 0
 uint32_t PlayerManager::getOnlyCard(const std::vector<uint32_t> &vGuessCards)
 {
-	for (uint32_t uiCard : vGuessCards)
+	for (const uint32_t uiCard : vGuessCards)
 	{
 		if (uiCard != 0)
 		{
@@ -105,21 +105,34 @@ void PlayerManager::addSolvedGuess(const std::string &sSolver,
 
 	//If the Solver already owns one of these cards, we CAN'T infer more information from
 	//	the solution of this guess (But we can infer info from who it passed)
-	if (!pPlayer->ownsOneOfTheseCards(vGuessCards)) {
-		removeOwnedCardsFromGuess(vGuessCards);
-		/*
-		This may be extra stuff. Just add the details, then do an update pass
-		uint32_t uiCardsLeftInGuess = removeOwnedCardsFromGuess(vGuessCards);
-		if (uiCardsLeftInGuess == 1) {
-			uint32_t uiOnlyCardLeft = getOnlyCard(vGuessCards);
-			pPlayer->addCard(uiOnlyCardLeft);
-			//TODO: Implement the blast function
-			cardClaimedBlast(uiOnlyCardLeft);
-		} else {
-		*/
-			pPlayer->addGuess(vGuessCards);
-		//}
-	}
+	if (!pPlayer->ownsOneOfTheseCards(vGuessCards) && removeOwnedCardsFromGuess(vGuessCards) != 0) {
+        pPlayer->addGuess(vGuessCards);
+        /*
+         * JUST do this from the engine after every add. We can optimize later
+        bool bSolutionFound = pPlayer->checkForSolutions(this);
+        if (bSolutionFound)
+        {
+            updatePlayerState();
+        }
+        */
+    }
+}
+
+void PlayerManager::updatePlayerState()
+{
+    bool bSolutionFound = false;
+    //We're going to run through each user's stored guesses to check for new info. If, at any point,
+    //  a new card is claimed, we do another full run through. This is to make sure that this 
+    //  claiming of the card does not cause another card to be able to be claimed
+    while (bSolutionFound)
+    {
+        bSolutionFound = false;
+        bSolutionFound = m_userPlayer.checkForSolutions(this);
+        for (Player &player : m_otherPlayers)
+        {
+            bSolutionFound |= player.checkForSolutions(this);
+        }
+    }
 }
 
 void PlayerManager::addPassedGuess(const std::string &sPasser,
