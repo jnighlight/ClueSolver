@@ -10,9 +10,10 @@ program_CXX_SRCS := $(filter-out t_all.cpp,$(program_CXX_SRCS))
 program_CXX_OBJS := ${program_CXX_SRCS:.cpp=.o}
 program_TEST_OBJS := ${program_TEST_SRCS:.cpp=.o}
 program_OBJS := $(program_C_OBJS) $(program_CXX_OBJS)
-program_INCLUDE_DIRS :=
-program_LIBRARY_DIRS :=
-program_LIBRARIES := 
+
+program_INCLUDE_DIRS := /usr/local/include/
+program_LIBRARY_DIRS := /usr/local/lib/
+program_LIBRARIES :=
 
 CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir)) -std=c++11
 LDFLAGS += $(foreach librarydir,$(program_LIBRARY_DIRS),-L$(librarydir))
@@ -26,9 +27,9 @@ $(program_NAME): $(program_OBJS)
 	    $(LINK.cc) $(program_OBJS) -o $(program_NAME)
 
 gtest: $(program_TEST_OBJS) $(program_TEST_FILES)
-	    $(LINK.cc) $(program_TEST_OBJS) -o gtest
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(program_TEST_OBJS) $(LDFLAGS) -o gtest 
 
-test: LDFLAGS += -lgtest -lgcov
+test: program_LIBRARIES += gtest pthread
 test: gtest
 
 clean:
