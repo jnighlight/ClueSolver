@@ -182,10 +182,3 @@ void Cli::getGuess(Guess &guess)
     std::cout << "Which player solved the guess?\n";
 }
 */
-
-//This is nasty ladies and gentlemen. I want to replace this with curse soon. But for now, consider it
-//  technical debt
-void Cli::clearScreen()
-{
-    std::cout << std::string(100, '\n');
-}
