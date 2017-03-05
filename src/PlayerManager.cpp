@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ncurses.h>
 #include "PlayerManager.h"
 
 PlayerManager::PlayerManager(const PlayerStartStates &playerStartStates)
@@ -17,8 +18,8 @@ void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartS
 	for (const PlayerManager::PlayerStartState &otherPlayerStartState : playerStartStates.m_vPlayerStartStates)
 	{
 		Player otherPlayer(otherPlayerStartState.m_sName, otherPlayerStartState.m_uiHandSize);
+        m_otherPlayers.push_back(otherPlayer);
 	}
-	Player m_userPlayer;
 }
 
 void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards)
@@ -149,10 +150,21 @@ void PlayerManager::addPassedGuess(const std::string &sPasser,
 	pPlayer->addNotOwnedCards(vGuessCards);
 }
 
-void PlayerManager::checkForNewSolutions()
+std::vector<std::string> PlayerManager::getPlayerNames()
 {
-}
-
-void PlayerManager::cardClaimedBlast(uint32_t uiClaimedCard)
-{
+    std::vector<std::string> vPlayerNames;
+    vPlayerNames.push_back(m_userPlayer.m_sName);
+    printw("Adding name");
+    printw(m_userPlayer.m_sName.c_str());
+    printw("\n");
+    printw("Number of other players: ");
+    printw("%d", m_otherPlayers.size());
+    printw("\n");
+    for (const Player& player : m_otherPlayers) {
+        vPlayerNames.push_back(player.m_sName);
+        printw("Adding name");
+        printw(player.m_sName.c_str());
+        printw("\n");
+    }
+    return vPlayerNames;
 }

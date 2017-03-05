@@ -10,6 +10,12 @@ public:
 	~Rules();
 	static const uint32_t MAX_PLAYERS;
 	static const uint32_t MIN_PLAYERS;
+    enum eCardType {
+        ePerson = 0,
+        eWeapon,
+        ePlace,
+        eUnknownType,
+    };
 	static const uint32_t PEOPLE_CARD_COUNT;
 	static const uint32_t WEAPON_CARD_COUNT;
 	static const uint32_t PLACE_CARD_COUNT;
@@ -24,4 +30,5 @@ public:
     static bool isPersonCard(uint32_t uiCard);
     static bool isWeaponCard(uint32_t uiCard);
     static bool isPlaceCard(uint32_t uiCard);
+    static Rules::eCardType getCardType(uint32_t uiCard);
 };

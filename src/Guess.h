@@ -1,9 +1,10 @@
 #pragma once
-#ifndef GUESS_H
-#define GUESS_H
+
 #include <vector>
 #include <string>
 #include <cstdint>
+
+#include "Rules.h"
 
 class Guess
 {
@@ -23,6 +24,5 @@ public:
 	bool m_bSolved;
 	std::string m_sStopper;
 	std::vector<std::string> m_svPasses;
+    void addCard(uint32_t uiCard, Rules::eCardType eCardType);
 };
-
-#endif // !GUESS_H

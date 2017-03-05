@@ -15,7 +15,7 @@ program_INCLUDE_DIRS := /usr/local/include/ /usr/include/
 program_LIBRARY_DIRS := /usr/local/lib/ /usr/lib/
 program_LIBRARIES := ncurses
 
-CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir)) -std=c++11
+CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir)) -std=c++11 -ggdb
 LDFLAGS += $(foreach librarydir,$(program_LIBRARY_DIRS),-L$(librarydir))
 LDFLAGS += $(foreach library,$(program_LIBRARIES),-l$(library))
 

@@ -73,6 +73,21 @@ bool Rules::isPlaceCard(uint32_t uiCard)
     return uiCard > (PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT)
         && uiCard <= (PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT + PLACE_CARD_COUNT);
 }
+
+Rules::eCardType Rules::getCardType(uint32_t uiCard)
+{
+    if (Rules::isPersonCard(uiCard)) {
+        return Rules::ePerson;
+    } else if (Rules::isWeaponCard(uiCard)) {
+        return Rules::eWeapon;
+    } else if (Rules::isPlaceCard(uiCard)) {
+        return Rules::ePlace;
+    }
+    printw("Rules::getCardType - THIS CARD DON'T FIT YO");
+    return Rules::eUnknownType;
+    //TODO: throw exception
+}
+
 bool Rules::isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards)
 {
     uint32_t uiPersonCards = 0;

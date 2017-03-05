@@ -48,17 +48,12 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
     refresh();
 }
 
-/*
-uint32_t Cli::pickAPlayer()
-{
-}
-*/
-
 uint32_t Cli::pickACard()
 {
 	uint32_t uiSelection = 0;
 	bool bGoodCard = true;
 	do {
+        clear();
 		Rules::listCards();
 		printw("Enter the number of a card you have: ");
         refresh();
@@ -84,17 +79,16 @@ uint32_t Cli::getValidUserInt()
 {
 	std::string sUserInput;
 	uint32_t uiUserInt = 0;
-	bool bFirst = true;
+	bool bGoodNumber = false;
 	do {
-		if (!bFirst) {
-            printw("Hm, it looks like that wasn't a number. Or it was 0. Which is baaasically not a number. Try again.\n");
-			//std::cout << "Hm, it looks like that wasn't a number. Or it was 0. Which is baaasically not a number. Try again.\n";
-		}
         getValidUserString(sUserInput);
-		std::stringstream strStream(sUserInput);
-		strStream >> uiUserInt;
-		bFirst = false;
-	} while (uiUserInt == 0);
+        try {
+            uiUserInt = std::stoi(sUserInput);
+            bGoodNumber = true;
+        } catch (std::invalid_argument e) {
+            printw("Hm, it looks like that wasn't a number. Try again.\n");
+        }
+	} while (!bGoodNumber);
 	return uiUserInt;
 }
 
@@ -104,7 +98,6 @@ uint32_t Cli::getPlayerCount()
     refresh();
     std::string sResponse;
 	uint32_t uiPlayerCount = getValidUserInt();
-    //printw("you printed: %s", sResponse.c_str());
 	while (!Rules::validPlayerCount(uiPlayerCount)) {
         printw("Clue is best played with between %d and %d players. Try again!\n",unsigned(Rules::MIN_PLAYERS), unsigned(Rules::MAX_PLAYERS));
         refresh();
@@ -166,11 +159,15 @@ void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 	} while (!bAcceptable);
 }
 
-void Cli::listPlayers(const std::list<std::string> &lPlayerNames)
+void Cli::listPlayers(std::vector<std::string> vPlayerNames, bool bIncludeNone /* = false */)
 {
 	uint32_t uiSelectionCounter = 1;
 	printw("Players:\n");
-	for (std::string sPerson: lPlayerNames)
+    if (bIncludeNone) {
+		printw("0. None");
+		printw(" ");
+    }
+	for (std::string sPerson: vPlayerNames)
 	{
 		printw("%d. ",uiSelectionCounter);
         printw(sPerson.c_str());
@@ -180,34 +177,94 @@ void Cli::listPlayers(const std::list<std::string> &lPlayerNames)
 	printw("\n");
 }
 
-void Cli::getGuess(Guess &guess, const std::list<std::string> &lPlayerNames)
+//TODO: Try to decouple the UI with the logic for better unit testing
+void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
 {
-    clear();
+    //clear();
     printw("Time to add guesses! Which player made the guess?\n");
-    listPlayers(lPlayerNames);
+    listPlayers(vPlayerNames);
     refresh();
     uint32_t uiGuesser = 0;
     do {
         uiGuesser = getValidUserInt();
-        if (uiGuesser <= 0 || uiGuesser > lPlayerNames.size()) {
+        if (uiGuesser <= 0 || uiGuesser > vPlayerNames.size()) {
             printw("That was not an option. Try again\n");
         }
-    } while (uiGuesser <= 0 || uiGuesser > lPlayerNames.size());
+    } while (uiGuesser <= 0 || uiGuesser > vPlayerNames.size());
+
+    std::vector<uint32_t> vGuessCards = { 0, 0, 0};
+    bool bGotAcceptableCards = false;
+    do {
+        clear();
+        printw("What cards were in the guess?\n");
+        refresh();
+        for (uint32_t &uiCard : vGuessCards)
+        {
+            uiCard = pickACard();
+        }
+        if (Rules::isOneOfEachCardType(vGuessCards)) {
+            for (uint32_t &uiCard : vGuessCards)
+            {
+                Rules::eCardType eCardType = Rules::getCardType(uiCard);
+                guess.addCard(uiCard, eCardType);
+            }
+            bGotAcceptableCards = true;
+        } else {
+            printw("You must select one of each type of card. Try again\n");
+            getch();
+        }
+    } while (!bGotAcceptableCards);
+
+    printw("Which player solved the guess?\n");
+    listPlayers(vPlayerNames, true);
+    uint32_t uiSolver = 0;
+    do {
+        uiSolver = getValidUserInt();
+        if (uiSolver > vPlayerNames.size()) {
+            printw("That was not an option. Try again\n");
+        } else if (uiSolver == uiGuesser) {
+            printw("The Solver cannot be the Guesser. Try again\n");
+        }
+    } while (uiSolver <= 0 || uiSolver > (vPlayerNames.size()+1) || uiSolver == uiGuesser);
+
+    printw("Which players passed on the guess?\n");
+    listPlayers(vPlayerNames, true);
+    std::set<uint32_t> passers;
+    uint32_t uiPasser = 0;
+    bool bValidPasser = false;
+    bool bRealPlayer = true;
+    do {
+        uiPasser = getValidUserInt();
+        bRealPlayer = uiPasser <= vPlayerNames.size();
+        bValidPasser = (uiPasser != uiGuesser);
+        if (uiPasser != 0) {
+            bValidPasser &= (uiPasser != uiSolver);
+        }
+        if (!bRealPlayer) {
+            printw("That was not an option. Try again\n");
+            continue;
+        } else if (!bValidPasser) {
+            printw("The Solver and/or the Guesser can't pass. Try again\n");
+        } else if (uiPasser != 0) {
+            passers.insert(uiPasser);
+        }
+    } while (!bRealPlayer || !bValidPasser || uiPasser != 0);
 
     clear();
-    std::cout << "What cards were in the guess?\n";
-    refresh();
-    std::vector<uint32_t> vGuessCards = { 0, 0, 0};
-    for (uint32_t &uiCard : vGuessCards)
-    {
-        uiCard = pickACard();
+    guess.m_sGuesserName =  vPlayerNames[uiGuesser-1];
+    printw("The guesser!: ");
+    printw(guess.m_sGuesserName.c_str());
+    printw("\n");
+    if (uiSolver != 0) {
+        guess.m_sStopper = vPlayerNames[uiSolver-1];
+        printw("The solver!: ");
+        printw(guess.m_sStopper.c_str());
     }
-    Rules::isOneOfEachCardType(vGuessCards);
-    /*
-        guess.addCard(uiFirstCard, Rules::getCardType(uiFirstCard));
-        guess.addCard(uiSecondCard, Rules::getCardType(uiSecondCard));
-        guess.addCard(uiThirdCard, Rules::getCardType(uiThirdCard));
-        std::cout << "Which players passed on the guess?\n";
-        std::cout << "Which player solved the guess?\n";
-    */
+    printw("The passers!\n");
+    for (uint32_t uiPasser : passers) {
+        printw(vPlayerNames[uiPasser - 1].c_str());
+        printw("\n");
+    }
+    refresh();
+    getch();
 }

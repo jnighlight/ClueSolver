@@ -36,3 +36,9 @@ void Engine::processGuess(const Guess &guess)
 	m_playerManager.updatePlayerState();
     //return m_playerManager.isSolved();
 }
+
+std::vector<std::string> Engine::getPlayerNames()
+{
+    return m_playerManager.getPlayerNames();
+}
+

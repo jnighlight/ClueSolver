@@ -20,3 +20,21 @@ Guess::Guess(uint32_t uiPerson,
 Guess::~Guess()
 {
 }
+
+void Guess::addCard(uint32_t uiCard, Rules::eCardType eCardType)
+{
+    switch (eCardType) {
+        case Rules::ePerson:
+            m_uiPerson = uiCard;
+            break;
+        case Rules::eWeapon:
+            m_uiWeapon = uiCard;
+            break;
+        case Rules::ePlace:
+            m_uiPlace = uiCard;
+            break;
+        default:
+            //TODO: Throw exception
+            break;
+    };
+}

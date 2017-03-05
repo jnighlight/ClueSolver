@@ -53,6 +53,7 @@ public:
 	void checkForNewSolutions();
 	void cardClaimedBlast(uint32_t uiClaimedCard);
 	bool isOwned(uint32_t uiCard);
+    std::vector<std::string> getPlayerNames();
 
 	Player m_userPlayer;
 	std::vector<Player> m_otherPlayers;

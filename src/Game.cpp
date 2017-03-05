@@ -38,6 +38,8 @@ void Game::start()
 
 void Game::guessLoop()
 {
+	Guess guess;
+    m_cli.getGuess(guess, m_engine.getPlayerNames());
     /*
 	Guess guess;
 	GameState gameState;
