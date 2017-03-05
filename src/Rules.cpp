@@ -58,6 +58,38 @@ bool Rules::isAValidCard(uint32_t uiCardNumber)
 	return uiCardNumber > 0 && uiCardNumber < Rules::TOTAL_CARDS;
 }
 
+bool Rules::isPersonCard(uint32_t uiCard)
+{
+    return uiCard > 0 && uiCard <= PEOPLE_CARD_COUNT;
+}
+
+bool Rules::isWeaponCard(uint32_t uiCard)
+{
+    return uiCard > PEOPLE_CARD_COUNT && uiCard <= (PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT);
+}
+
+bool Rules::isPlaceCard(uint32_t uiCard)
+{
+    return uiCard > (PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT)
+        && uiCard <= (PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT + PLACE_CARD_COUNT);
+}
+bool Rules::isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards)
+{
+    uint32_t uiPersonCards = 0;
+    uint32_t uiPlaceCards = 0;
+    uint32_t uiWeaponCards = 0;
+    for (uint32_t uiCard : vGuessCards) {
+        if (isPersonCard(uiCard)) {
+            ++uiPersonCards;
+        } else if (isWeaponCard(uiCard)) {
+            ++uiWeaponCards;
+        } else if (isPlaceCard(uiCard)) {
+            ++uiPlaceCards;
+        }
+    }
+	return uiPersonCards == 1 && uiPlaceCards == 1 && uiWeaponCards == 1;
+}
+
 Rules::Rules()
 {
 }

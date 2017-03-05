@@ -166,19 +166,48 @@ void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 	} while (!bAcceptable);
 }
 
-/*
-void Cli::getGuess(Guess &guess)
+void Cli::listPlayers(const std::list<std::string> &lPlayerNames)
 {
-    std::cout << "Time to add guesses! Which player made the guess?\n";
+	uint32_t uiSelectionCounter = 1;
+	printw("Players:\n");
+	for (std::string sPerson: lPlayerNames)
+	{
+		printw("%d. ",uiSelectionCounter);
+        printw(sPerson.c_str());
+		printw(" ");
+		++uiSelectionCounter;
+	}
+	printw("\n");
+}
+
+void Cli::getGuess(Guess &guess, const std::list<std::string> &lPlayerNames)
+{
+    clear();
+    printw("Time to add guesses! Which player made the guess?\n");
+    listPlayers(lPlayerNames);
+    refresh();
+    uint32_t uiGuesser = 0;
+    do {
+        uiGuesser = getValidUserInt();
+        if (uiGuesser <= 0 || uiGuesser > lPlayerNames.size()) {
+            printw("That was not an option. Try again\n");
+        }
+    } while (uiGuesser <= 0 || uiGuesser > lPlayerNames.size());
+
+    clear();
     std::cout << "What cards were in the guess?\n";
-        uint32_t uiFirstCard = pickACard();
-        uint32_t uiSecondCard = pickACard();
-        uint32_t uiThirdCard = pickACard();
-        Rules::ensureOneCardOfEachType(uiFirstCard, uiSecondCard, uiThirdCard);
+    refresh();
+    std::vector<uint32_t> vGuessCards = { 0, 0, 0};
+    for (uint32_t &uiCard : vGuessCards)
+    {
+        uiCard = pickACard();
+    }
+    Rules::isOneOfEachCardType(vGuessCards);
+    /*
         guess.addCard(uiFirstCard, Rules::getCardType(uiFirstCard));
         guess.addCard(uiSecondCard, Rules::getCardType(uiSecondCard));
         guess.addCard(uiThirdCard, Rules::getCardType(uiThirdCard));
-    std::cout << "Which players passed on the guess?\n";
-    std::cout << "Which player solved the guess?\n";
+        std::cout << "Which players passed on the guess?\n";
+        std::cout << "Which player solved the guess?\n";
+    */
 }
-*/

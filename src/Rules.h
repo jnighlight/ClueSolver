@@ -20,4 +20,8 @@ public:
 	static bool validPlayerCount(uint32_t uiPlayerCount);
 	static void listCards();
 	static bool isAValidCard(uint32_t uiCardNumber);
+    static bool isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards);
+    static bool isPersonCard(uint32_t uiCard);
+    static bool isWeaponCard(uint32_t uiCard);
+    static bool isPlaceCard(uint32_t uiCard);
 };
