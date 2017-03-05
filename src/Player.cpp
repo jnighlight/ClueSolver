@@ -11,6 +11,11 @@ Player::~Player()
 {
 }
 
+bool Player::isSolved() const
+{
+	return m_vOwnedCards.size() == m_uiHandSize;
+}
+
 bool Player::addGuess(const std::vector<uint32_t> &vCards)
 {
 	if (vCards.size() != 3)

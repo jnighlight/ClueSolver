@@ -21,36 +21,37 @@ bool Rules::validPlayerCount(uint32_t uiPlayerCount)
 	return (uiPlayerCount <= MAX_PLAYERS && uiPlayerCount >= MIN_PLAYERS);
 }
 
-void Rules::listCards()
+std::string Rules::listCards()
 {
+    std::string sCardList;
 	uint32_t uiSelectionCounter = 1;
-	printw("Persons:\n");
+	sCardList += "Persons:\n";
 	for (std::string sPersonCard : s_lPeople)
 	{
-		printw("%d. ",uiSelectionCounter);
-        printw(sPersonCard.c_str());
-		printw(" ");
+		sCardList += std::to_string(uiSelectionCounter) + ". ";
+        sCardList += sPersonCard.c_str();
+		sCardList += "\n";
 		++uiSelectionCounter;
 	}
-	printw("\n");
-	printw("Weapons:\n");
+	sCardList += "\nWeapons:\n";
 	for (std::string sWeaponCard : s_lWeapons)
 	{
-		printw("%d. ",uiSelectionCounter);
-		printw(sWeaponCard.c_str());
-		printw(" ");
+		sCardList += std::to_string(uiSelectionCounter) + ". ";
+		sCardList += sWeaponCard.c_str();
+		sCardList += "\n";
 		++uiSelectionCounter;
 	}
-	printw("\n");
-	printw("Places:\n");
+	sCardList += "\n";
+	sCardList += "Places:\n";
 	for (std::string sPlaceCard : s_lPlaces)
 	{
-		printw("%d. ",uiSelectionCounter);
-		printw(sPlaceCard.c_str());
-		printw(" ");
+		sCardList += std::to_string(uiSelectionCounter) + ". ";
+		sCardList += sPlaceCard.c_str();
+		sCardList += "\n";
 		++uiSelectionCounter;
 	}
-	printw("\n");
+	sCardList += "\n";
+    return sCardList;
 }
 
 bool Rules::isAValidCard(uint32_t uiCardNumber)

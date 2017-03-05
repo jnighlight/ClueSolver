@@ -24,7 +24,7 @@ public:
 	static const std::vector<std::string> s_lPlaces;
 	static const uint32_t TOTAL_CARDS;
 	static bool validPlayerCount(uint32_t uiPlayerCount);
-	static void listCards();
+	static std::string listCards();
 	static bool isAValidCard(uint32_t uiCardNumber);
     static bool isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards);
     static bool isPersonCard(uint32_t uiCard);

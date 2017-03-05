@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <ncurses.h>
 
 #include "PlayerManager.h"
 
@@ -18,10 +19,17 @@ public:
 	void getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState);
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
     void getGuess(Guess &guess, std::vector<std::string> vPlayerNames);
+    void setStatus();
 private:
 	uint32_t getValidUserInt();
 	void getValidUserString(std::string &sInputString, uint32_t uiMaxChars = 20);
 	uint32_t pickACard();
     void listPlayers(std::vector<std::string> vPlayerNames, bool bIncludeNone = false);
+    void refreshWindows();
+
+    WINDOW *m_textWinBorder;
+    WINDOW *m_textWin;
+    WINDOW *m_statusWinBorder;
+    WINDOW *m_statusWin;
 };
 

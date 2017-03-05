@@ -21,7 +21,7 @@ void Engine::setUserCards(const std::vector<uint32_t> &vPlayerCards)
 	m_playerManager.setUserPlayerCards(vPlayerCards);
 }
 
-void Engine::processGuess(const Guess &guess)
+bool Engine::processGuess(const Guess &guess)
 {
 	for (std::string sPassedPlayers : guess.m_svPasses)
 	{
@@ -34,7 +34,7 @@ void Engine::processGuess(const Guess &guess)
 		//	OR they are the actual answer. Surely there's some information to be gleaned there?
 	}
 	m_playerManager.updatePlayerState();
-    //return m_playerManager.isSolved();
+    return m_playerManager.isSolved();
 }
 
 std::vector<std::string> Engine::getPlayerNames()

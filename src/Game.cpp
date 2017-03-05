@@ -29,6 +29,7 @@ void Game::start()
 	m_engine.parsePlayerInfo(playerStartStates);
 	m_cli.getUserCards(uiUserCardCount, vPlayerCards);
 	m_engine.setUserCards(vPlayerCards);
+    m_cli.setStatus(m_engine.getPlayerStatus());
 	//We are now in a state that requires players to start making guesses.
 	//This will be our display break, where we will supply our display information
 	//	to the CLI, and let it display until it recieves a guess, which we will send
@@ -38,16 +39,13 @@ void Game::start()
 
 void Game::guessLoop()
 {
+    bool bSolved = false;
 	Guess guess;
-    m_cli.getGuess(guess, m_engine.getPlayerNames());
-    /*
-	Guess guess;
-	GameState gameState;
+	//GameState gameState;
 	while (!bSolved) {
 		m_cli.getGuess(guess, m_engine.getPlayerNames());
 		bSolved = m_engine.processGuess(guess);
-		m_cli.display(m_engine.getGameState());
+		//m_cli.display(m_engine.getGameState());
 		guess.clear();
 	}
-    */
 }

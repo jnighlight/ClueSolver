@@ -42,6 +42,7 @@ public:
 	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
     void updatePlayerState();
+    //PlayerStatusDisplay  getPlayerStatusForDisplay();
 	void addSolvedGuess(const std::string &sSolver,
 				  uint32_t uiPerson,
 				  uint32_t uiPlace,
@@ -50,9 +51,9 @@ public:
 						uint32_t uiPerson,
 						uint32_t uiPlace,
 						uint32_t uiWeapon);
-	void checkForNewSolutions();
-	void cardClaimedBlast(uint32_t uiClaimedCard);
 	bool isOwned(uint32_t uiCard);
+	void checkForNewSolutions();
+    bool isSolved();
     std::vector<std::string> getPlayerNames();
 
 	Player m_userPlayer;

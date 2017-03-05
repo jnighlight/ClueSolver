@@ -21,6 +21,16 @@ Guess::~Guess()
 {
 }
 
+void Guess::clear()
+{
+	m_uiPerson = 0;
+	m_uiPlace = 0;
+	m_uiWeapon = 0;
+	m_sGuesserName.clear();
+	m_sStopper.clear();
+    m_svPasses.empty();
+}
+
 void Guess::addCard(uint32_t uiCard, Rules::eCardType eCardType)
 {
     switch (eCardType) {

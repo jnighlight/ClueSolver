@@ -25,4 +25,5 @@ public:
 	std::string m_sStopper;
 	std::vector<std::string> m_svPasses;
     void addCard(uint32_t uiCard, Rules::eCardType eCardType);
+    void clear();
 };

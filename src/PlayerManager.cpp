@@ -20,6 +20,7 @@ void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartS
 		Player otherPlayer(otherPlayerStartState.m_sName, otherPlayerStartState.m_uiHandSize);
         m_otherPlayers.push_back(otherPlayer);
 	}
+	Player m_userPlayer;
 }
 
 void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards)
@@ -134,6 +135,17 @@ void PlayerManager::updatePlayerState()
             bSolutionFound |= player.checkForSolutions(this);
         }
     }
+}
+
+bool PlayerManager::isSolved()
+{
+    bool bIsSolved = true;
+    for (const Player& otherPlayer : m_otherPlayers) {
+        if (!otherPlayer.isSolved()) {
+            bIsSolved = false;
+        }
+    }
+    return bIsSolved;
 }
 
 void PlayerManager::addPassedGuess(const std::string &sPasser,

@@ -45,6 +45,7 @@ public:
 	std::set<uint32_t> m_vDefinitelyNotOwnedCards;
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 
+    bool isSolved() const;
 	void addCard(uint32_t uiCardToAdd);
 	bool addGuess(const std::vector<uint32_t> &vCards);
 	void addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards);

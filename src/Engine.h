@@ -47,7 +47,7 @@ public:
 	virtual ~Engine();
 	void parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo);
 	void setUserCards(const std::vector<uint32_t> &vPlayerCards);
-	void processGuess(const Guess &guess);
+	bool processGuess(const Guess &guess);
     std::vector<std::string> getPlayerNames();
 
 private:
