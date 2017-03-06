@@ -68,6 +68,13 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 		bool bAccepted = true;
 		do {
             wclear(m_textWin);
+            if (vClaimedCards.size()) {
+                wprintw(m_textWin, "You've Picked: ");
+                for (uint32_t uiCard : vClaimedCards) {
+                    wprintw(m_textWin, "%d, ", uiCard);
+                }
+                wprintw(m_textWin, "\n");
+            }
             wprintw(m_textWin, "Pick the cards in your hand!\n");
 			uiSelection = pickACard();
 
@@ -98,7 +105,6 @@ uint32_t Cli::pickACard()
     wclear(m_statusWin);
     wprintw(m_statusWin, sCardList.c_str());
 	do {
-        wclear(m_textWin);
 		wprintw(m_textWin, "Enter the number of the card:");
         refreshWindows();
 		uiSelection = getValidUserInt();
@@ -255,7 +261,8 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
 void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
 {
     //wclear(m_textWin);
-    wprintw(m_textWin, "Time to add guesses! Which player made the guess?\n");
+    wclear(m_textWin);
+    wprintw(m_textWin, "Which player made the guess?\n");
     listPlayers(vPlayerNames);
     refreshWindows();
     uint32_t uiGuesser = 0;
@@ -265,11 +272,13 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
             wprintw(m_textWin, "That was not an option. Try again\n");
         }
     } while (uiGuesser <= 0 || uiGuesser > vPlayerNames.size());
+    guess.m_sGuesserName =  vPlayerNames[uiGuesser-1];
 
     std::vector<uint32_t> vGuessCards = { 0, 0, 0};
     bool bGotAcceptableCards = false;
     do {
         wclear(m_textWin);
+        wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
         wprintw(m_textWin, "What cards were in the guess?\n");
         refreshWindows();
         for (uint32_t &uiCard : vGuessCards)
@@ -289,6 +298,8 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
         }
     } while (!bGotAcceptableCards);
 
+    wclear(m_textWin);
+    wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
     wprintw(m_textWin, "Which player solved the guess?\n");
     listPlayers(vPlayerNames, true);
     uint32_t uiSolver = 0;
@@ -299,8 +310,14 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
         } else if (uiSolver == uiGuesser) {
             wprintw(m_textWin, "The Solver cannot be the Guesser. Try again\n");
         }
-    } while (uiSolver <= 0 || uiSolver > (vPlayerNames.size()+1) || uiSolver == uiGuesser);
+    } while (uiSolver < 0 || uiSolver > (vPlayerNames.size()+1) || uiSolver == uiGuesser);
 
+    wclear(m_textWin);
+    wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
+    if (uiSolver != 0) {
+        guess.m_sStopper = vPlayerNames[uiSolver-1];
+        wprintw(m_textWin, "Solver: %s\n", guess.m_sStopper.c_str());
+    }
     wprintw(m_textWin, "Which players passed on the guess?\n");
     listPlayers(vPlayerNames, true);
     std::set<uint32_t> passers;
@@ -325,7 +342,6 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
     } while (!bRealPlayer || !bValidPasser || uiPasser != 0);
 
     /* --------- These really should be setters and getters -----------*/
-    guess.m_sGuesserName =  vPlayerNames[uiGuesser-1];
     wprintw(m_textWin, "The guesser!: ");
     wprintw(m_textWin, guess.m_sGuesserName.c_str());
     wprintw(m_textWin, "\n");

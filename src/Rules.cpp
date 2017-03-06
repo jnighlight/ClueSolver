@@ -79,7 +79,7 @@ std::string Rules::getCardName(uint32_t uiCard)
 
 bool Rules::isAValidCard(uint32_t uiCardNumber)
 {
-	return uiCardNumber > 0 && uiCardNumber < Rules::TOTAL_CARDS;
+	return uiCardNumber > 0 && uiCardNumber <= Rules::TOTAL_CARDS;
 }
 
 bool Rules::isPersonCard(uint32_t uiCard)
