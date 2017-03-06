@@ -21,9 +21,9 @@ public:
 	uint32_t m_uiPlace;
 	uint32_t m_uiWeapon;
 	std::string m_sGuesserName;
-	bool m_bSolved;
 	std::string m_sStopper;
 	std::vector<std::string> m_svPasses;
+
     void addCard(uint32_t uiCard, Rules::eCardType eCardType);
     void clear();
 };

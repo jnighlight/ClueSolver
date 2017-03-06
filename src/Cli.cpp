@@ -252,6 +252,22 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
                 wprintw(m_statusWin, "%d. -\n", (i + 1));
             }
         }
+        wprintw(m_statusWin, "Guesses:\n");
+        for (const PlayerStatusForDisplay::GuessDisplay &guessDisplay : playerDisplay.m_vAnsweredGuesses) {
+            std::string sPersonCard = Rules::getCardName(guessDisplay.m_uiPersonCard);
+            std::string sWeaponCard = Rules::getCardName(guessDisplay.m_uiWeaponCard);
+            std::string sPlaceCard = Rules::getCardName(guessDisplay.m_uiPlaceCard);
+            wprintw(m_statusWin, "Person: %d - %s, "
+                    ,guessDisplay.m_uiPersonCard
+                    ,sPersonCard.c_str());
+            wprintw(m_statusWin, "Weapon: %d - %s, "
+                    ,guessDisplay.m_uiWeaponCard
+                    ,sWeaponCard.c_str());
+            wprintw(m_statusWin, "Place: %d - %s"
+                    ,guessDisplay.m_uiPlaceCard
+                    ,sPlaceCard.c_str());
+            wprintw(m_statusWin, "\n");
+        }
         wprintw(m_statusWin, "\n");
     }
     refreshWindows();
@@ -315,7 +331,7 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
     wclear(m_textWin);
     wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
     if (uiSolver != 0) {
-        guess.m_sStopper = vPlayerNames[uiSolver-1];
+        guess.m_sStopper = vPlayerNames.at(uiSolver-1);
         wprintw(m_textWin, "Solver: %s\n", guess.m_sStopper.c_str());
     }
     wprintw(m_textWin, "Which players passed on the guess?\n");

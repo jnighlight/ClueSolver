@@ -10,6 +10,7 @@ PlayerManager::PlayerManager(const PlayerStartStates &playerStartStates)
 PlayerManager::~PlayerManager()
 {
 }
+
 PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay()
 {
     PlayerStatusForDisplay playerStatusForDisplay;
@@ -42,7 +43,7 @@ void PlayerManager::setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards
 
 Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 {
-	if (m_userPlayer.m_sName.compare(sPlayerName))
+	if (m_userPlayer.m_sName.compare(sPlayerName) == 0)
 	{
 		return &m_userPlayer;
 	}
@@ -112,7 +113,7 @@ void PlayerManager::addSolvedGuess(const std::string &sSolver,
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
-	std::vector<uint32_t> vGuessCards = { uiPerson, uiPlace, uiWeapon };
+	std::vector<uint32_t> vGuessCards = { uiPerson, uiWeapon, uiPlace };
 
 	//If the Solver already owns one of these cards, we CAN'T infer more information from
 	//	the solution of this guess (But we can infer info from who it passed)
@@ -135,7 +136,7 @@ void PlayerManager::updatePlayerState()
     //We're going to run through each user's stored guesses to check for new info. If, at any point,
     //  a new card is claimed, we do another full run through. This is to make sure that this 
     //  claiming of the card does not cause another card to be able to be claimed
-    while (bSolutionFound)
+    do
     {
         bSolutionFound = false;
         bSolutionFound = m_userPlayer.checkForSolutions(this);
@@ -143,7 +144,7 @@ void PlayerManager::updatePlayerState()
         {
             bSolutionFound |= player.checkForSolutions(this);
         }
-    }
+    } while (bSolutionFound);
 }
 
 bool PlayerManager::isSolved()

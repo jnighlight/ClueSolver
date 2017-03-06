@@ -32,7 +32,7 @@ bool Engine::processGuess(const Guess &guess)
 	{
 		m_playerManager.addPassedGuess(sPassedPlayers, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
 	}
-	if (guess.m_bSolved) {
+	if (!guess.m_sStopper.empty()) {
 		m_playerManager.addSolvedGuess(guess.m_sStopper, guess.m_uiPerson, guess.m_uiPlace, guess.m_uiWeapon);
 	} else {
 		//TODO: Have to add case for not solved. IE all answers are EITHER owned by guesser

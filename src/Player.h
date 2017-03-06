@@ -18,7 +18,7 @@ public:
 			,m_uiPerson(0)
 			,m_uiWeapon(0)
         {};
-		AnsweredGuess(uint32_t uiPlace, uint32_t uiPerson, uint32_t uiWeapon)
+		AnsweredGuess(uint32_t uiPerson, uint32_t uiWeapon, uint32_t uiPlace)
 			:m_uiPlace(uiPlace)
 			,m_uiPerson(uiPerson)
 			,m_uiWeapon(uiWeapon)
