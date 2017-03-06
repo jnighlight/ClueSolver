@@ -11,6 +11,11 @@ Engine::~Engine()
 {
 }
 
+PlayerStatusForDisplay Engine::getPlayerStatus()
+{
+    return m_playerManager.getPlayerStatusForDisplay();
+}
+
 void Engine::parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo)
 {
 	m_playerManager.parsePlayerStartStates(playerInfo);

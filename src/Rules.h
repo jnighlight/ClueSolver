@@ -31,4 +31,5 @@ public:
     static bool isWeaponCard(uint32_t uiCard);
     static bool isPlaceCard(uint32_t uiCard);
     static Rules::eCardType getCardType(uint32_t uiCard);
+    static std::string getCardName(uint32_t uiCard);
 };

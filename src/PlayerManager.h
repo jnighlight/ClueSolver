@@ -4,6 +4,7 @@
 
 #include "Guess.h"
 #include "Player.h"
+#include "PlayerStatusForDisplay.h"
 
 class PlayerManager
 {
@@ -54,6 +55,7 @@ public:
 	bool isOwned(uint32_t uiCard);
 	void checkForNewSolutions();
     bool isSolved();
+    PlayerStatusForDisplay getPlayerStatusForDisplay();
     std::vector<std::string> getPlayerNames();
 
 	Player m_userPlayer;

@@ -8,6 +8,7 @@
 #include "Place.h"
 #include "Player.h"
 #include "PlayerManager.h"
+#include "PlayerStatusForDisplay.h"
 #include "Weapon.h"
 
 class Engine
@@ -49,6 +50,7 @@ public:
 	void setUserCards(const std::vector<uint32_t> &vPlayerCards);
 	bool processGuess(const Guess &guess);
     std::vector<std::string> getPlayerNames();
+    PlayerStatusForDisplay getPlayerStatus();
 
 private:
 

@@ -67,6 +67,8 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 		uint32_t uiSelection = 0;
 		bool bAccepted = true;
 		do {
+            wclear(m_textWin);
+            wprintw(m_textWin, "Pick the cards in your hand!\n");
 			uiSelection = pickACard();
 
 			//Don't want any duplicate numbers
@@ -93,10 +95,11 @@ uint32_t Cli::pickACard()
 	uint32_t uiSelection = 0;
 	bool bGoodCard = true;
     std::string sCardList = Rules::listCards();
+    wclear(m_statusWin);
     wprintw(m_statusWin, sCardList.c_str());
 	do {
         wclear(m_textWin);
-		wprintw(m_textWin, "Enter the number of a card you have: ");
+		wprintw(m_textWin, "Enter the number of the card:");
         refreshWindows();
 		uiSelection = getValidUserInt();
 		bGoodCard = Rules::isAValidCard(uiSelection);
@@ -229,8 +232,23 @@ void Cli::listPlayers(std::vector<std::string> vPlayerNames, bool bIncludeNone /
 	wprintw(m_textWin, "\n");
 }
 
-void Cli::setStatus()
+void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
 {
+    wclear(m_statusWin);
+    for (const PlayerStatusForDisplay::PlayerDisplay &playerDisplay : playerStatusForDisplay.m_vPlayerDisplays) {
+        wprintw(m_statusWin, "Player: %s", playerDisplay.m_sName.c_str());
+        wprintw(m_statusWin, "\n");
+        for (uint32_t i = 0; i < playerDisplay.m_uiCardCount; i++)
+        {
+            if (i < playerDisplay.m_vOwnedCardNames.size()) {
+                wprintw(m_statusWin, "%d. %s\n", (i + 1), playerDisplay.m_vOwnedCardNames[i].c_str());
+            } else {
+                wprintw(m_statusWin, "%d. -\n", (i + 1));
+            }
+        }
+        wprintw(m_statusWin, "\n");
+    }
+    refreshWindows();
 }
 
 //TODO: Try to decouple the UI with the logic for better unit testing

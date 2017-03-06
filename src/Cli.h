@@ -3,6 +3,7 @@
 #include <ncurses.h>
 
 #include "PlayerManager.h"
+#include "PlayerStatusForDisplay.h"
 
 class Cli
 {
@@ -19,7 +20,7 @@ public:
 	void getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState);
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
     void getGuess(Guess &guess, std::vector<std::string> vPlayerNames);
-    void setStatus();
+    void setStatus(const PlayerStatusForDisplay &playerStatusForDisplay);
 private:
 	uint32_t getValidUserInt();
 	void getValidUserString(std::string &sInputString, uint32_t uiMaxChars = 20);

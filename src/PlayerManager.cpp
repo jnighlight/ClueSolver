@@ -10,6 +10,15 @@ PlayerManager::PlayerManager(const PlayerStartStates &playerStartStates)
 PlayerManager::~PlayerManager()
 {
 }
+PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay()
+{
+    PlayerStatusForDisplay playerStatusForDisplay;
+    playerStatusForDisplay.addPlayer(m_userPlayer);
+    for (Player &otherPlayer : m_otherPlayers) {
+        playerStatusForDisplay.addPlayer(otherPlayer);
+    }
+    return playerStatusForDisplay;
+}
 
 void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartStates)
 {

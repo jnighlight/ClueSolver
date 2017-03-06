@@ -54,6 +54,29 @@ std::string Rules::listCards()
     return sCardList;
 }
 
+std::string Rules::getCardName(uint32_t uiCard)
+{
+    Rules::eCardType eRulesCardType = Rules::getCardType(uiCard);
+    uint32_t uiCardLoc = uiCard;
+    switch (eRulesCardType) {
+        case (ePerson):
+            return Rules::s_lPeople[uiCard - 1 ];
+            break;
+        case (eWeapon):
+            uiCardLoc = uiCard - PEOPLE_CARD_COUNT;
+            return Rules::s_lWeapons[uiCardLoc - 1 ];
+            break;
+        case (ePlace):
+            uiCardLoc = uiCard - PEOPLE_CARD_COUNT;
+            uiCardLoc -= WEAPON_CARD_COUNT;
+            return Rules::s_lPlaces[uiCardLoc - 1 ];
+            break;
+        default:
+            break;
+    }
+    return "";
+}
+
 bool Rules::isAValidCard(uint32_t uiCardNumber)
 {
 	return uiCardNumber > 0 && uiCardNumber < Rules::TOTAL_CARDS;
