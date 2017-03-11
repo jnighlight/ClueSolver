@@ -4,7 +4,6 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include "Card.h"
 #include "Guess.h"
 
 class PlayerManager;

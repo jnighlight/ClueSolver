@@ -9,8 +9,8 @@ const uint32_t Rules::MAX_PLAYERS = 6;
 const uint32_t Rules::MIN_PLAYERS = 3;
 
 const std::vector<std::string> Rules::s_lPeople = { "Scarlet", "Mustard", "White", "Green", "Peacock", "Plum" };
-//const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Poison", "Rope", "Gloves", "Knife", "Lead Pipe", "Revolver", "Wrench" };
-const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Rope", "Knife", "Lead Pipe", "Revolver", "Wrench" };
+const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Poison", "Rope", "Gloves", "Knife", "Lead Pipe", "Revolver", "Wrench" };
+//const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Rope", "Knife", "Lead Pipe", "Revolver", "Wrench" };
 const std::vector<std::string> Rules::s_lPlaces= {"Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"};
 const uint32_t Rules::PEOPLE_CARD_COUNT = (Rules::s_lPeople.size());
 const uint32_t Rules::WEAPON_CARD_COUNT = (Rules::s_lWeapons.size());

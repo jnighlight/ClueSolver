@@ -4,12 +4,9 @@
 #include <unordered_map>
 
 #include "Guess.h"
-#include "Person.h"
-#include "Place.h"
 #include "Player.h"
 #include "PlayerManager.h"
 #include "PlayerStatusForDisplay.h"
-#include "Weapon.h"
 
 class Engine
 {

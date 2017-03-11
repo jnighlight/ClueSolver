@@ -12,7 +12,7 @@ program_TEST_OBJS := ${program_TEST_SRCS:.cpp=.o}
 program_OBJS := $(program_C_OBJS) $(program_CXX_OBJS)
 
 program_INCLUDE_DIRS := /usr/local/include/ /usr/include/
-program_LIBRARY_DIRS := /usr/local/lib/ /usr/lib/
+program_LIBRARY_DIRS := /usr/local/lib/ /usr/lib/ /lib/
 program_LIBRARIES := ncurses
 
 CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir)) -std=c++11 -ggdb
