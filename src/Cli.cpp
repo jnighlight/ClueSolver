@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <stdexcept>
 
 #include "Cli.h"
 #include "Rules.h"
