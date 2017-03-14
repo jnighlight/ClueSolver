@@ -29,6 +29,7 @@ public:
         std::string m_sName;
         uint32_t m_uiCardCount;
         std::vector<std::string> m_vOwnedCardNames;
+        std::vector<std::string> m_vDefinitelyNotOwnedCardNames;
         std::vector<PlayerStatusForDisplay::GuessDisplay> m_vAnsweredGuesses;
     };
 
@@ -38,4 +39,5 @@ public:
     void addPlayer(const Player &player);
     void addPlayerCards(const Player &player, PlayerDisplay &playerDisplay);
     void addPlayerGuesses(const Player &player, PlayerDisplay &playerDisplay);
+    void addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay);
 };

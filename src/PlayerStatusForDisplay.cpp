@@ -8,6 +8,7 @@ void PlayerStatusForDisplay::addPlayer(const Player &player)
 
     addPlayerCards(player, playerDisplay);
     addPlayerGuesses(player, playerDisplay);
+    addPlayerNotOwnedCards(player, playerDisplay);
 
     m_vPlayerDisplays.push_back(playerDisplay);
 }
@@ -29,5 +30,12 @@ void PlayerStatusForDisplay::addPlayerGuesses(const Player &player, PlayerDispla
         guessDisplay.m_uiWeaponCard = answeredGuess.m_uiWeapon;
         guessDisplay.m_uiPlaceCard = answeredGuess.m_uiPlace;
         playerDisplay.m_vAnsweredGuesses.push_back(guessDisplay);
+    }
+}
+
+void PlayerStatusForDisplay::addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay)
+{
+    for (uint32_t uiCard : player.m_vDefinitelyNotOwnedCards) {
+        playerDisplay.m_vDefinitelyNotOwnedCardNames.push_back(Rules::getCardName(uiCard));
     }
 }

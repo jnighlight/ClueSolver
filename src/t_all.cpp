@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "t_player.h"
+#include "t_playermanager.h"
 
 int main(int argc, char * argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

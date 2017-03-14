@@ -252,6 +252,20 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
                 wprintw(m_statusWin, "%d. -\n", (i + 1));
             }
         }
+        wprintw(m_statusWin, "Not Owned Cards:\n");
+        uint32_t uiNotOwnedCardCount = 0;
+        uint32_t uiPerLine = 3;
+        for (std::string sCardName : playerDisplay.m_vDefinitelyNotOwnedCardNames) {
+            wprintw(m_statusWin, sCardName.c_str());
+            ++uiNotOwnedCardCount;
+            if (uiNotOwnedCardCount % uiPerLine == 0
+                    && uiNotOwnedCardCount >= playerDisplay.m_vDefinitelyNotOwnedCardNames.size()) {
+                wprintw(m_statusWin, "\n");
+            } else {
+                wprintw(m_statusWin, ", ");
+            }
+        }
+        wprintw(m_statusWin, "\n");
         wprintw(m_statusWin, "Guesses:\n");
         for (const PlayerStatusForDisplay::GuessDisplay &guessDisplay : playerDisplay.m_vAnsweredGuesses) {
             std::string sPersonCard = Rules::getCardName(guessDisplay.m_uiPersonCard);

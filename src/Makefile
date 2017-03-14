@@ -31,6 +31,7 @@ gtest: $(program_TEST_OBJS) $(program_TEST_FILES)
 
 test: program_LIBRARIES += gtest pthread
 test: gtest
+	./gtest
 
 clean:
 	    @- $(RM) $(program_NAME)

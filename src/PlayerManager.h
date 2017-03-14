@@ -28,7 +28,7 @@ public:
 
 	struct PlayerStartStates{
 		PlayerStartStates(uint32_t uiNumberOfPlayers)
-			:m_vPlayerStartStates(uiNumberOfPlayers - 1)
+			:m_vPlayerStartStates()
 		{};
 
 		PlayerStartState m_userPlayer;
