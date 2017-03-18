@@ -107,7 +107,7 @@ Player::guessState Player::processStoredGuess(AnsweredGuess &answeredGuess, Play
 	//	if I don't have the card to solve it?)
 	if (answeredGuess.isEmpty())
 	{
-		std::cout << "Player::" << __FUNCTION__ << ", Player has empty guess! How'd he get it?";
+		std::cout << "Player::" << __FUNCTION__ << ", Player has empty guess! How'd he get it?\n";
 		return Player::eTrash;
 	}
 	return Player::eNotSolved;

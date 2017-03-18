@@ -118,13 +118,3 @@ TEST_F(AnsweredGuessTest, getSolvedWillReturnSolvedCardIfSolved)
     EXPECT_EQ(0, m_answeredGuess.isSolved());
     EXPECT_EQ(0, m_answeredGuessEmpty.isSolved());
 };
-
-TEST_F(AnsweredGuessTest, processStoredGuess_)
-{
-    EXPECT_EQ(m_uiPlace, m_answeredGuessPlace.getSolved());
-    EXPECT_EQ(m_uiPerson, m_answeredGuessPerson.getSolved());
-    EXPECT_EQ(m_uiWeapon, m_answeredGuessWeapon.getSolved());
-
-    EXPECT_EQ(0, m_answeredGuess.isSolved());
-    EXPECT_EQ(0, m_answeredGuessEmpty.isSolved());
-};
