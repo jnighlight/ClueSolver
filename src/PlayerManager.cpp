@@ -170,17 +170,8 @@ std::vector<std::string> PlayerManager::getPlayerNames()
 {
     std::vector<std::string> vPlayerNames;
     vPlayerNames.push_back(m_userPlayer.m_sName);
-    printw("Adding name");
-    printw(m_userPlayer.m_sName.c_str());
-    printw("\n");
-    printw("Number of other players: ");
-    printw("%d", m_otherPlayers.size());
-    printw("\n");
     for (const Player& player : m_otherPlayers) {
         vPlayerNames.push_back(player.m_sName);
-        printw("Adding name");
-        printw(player.m_sName.c_str());
-        printw("\n");
     }
     return vPlayerNames;
 }
