@@ -75,10 +75,10 @@ TEST_F(PlayerManagerTest, addPassedGuessWorks)
             uiPlace,
             uiWeapon);
     Player* pPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
-    EXPECT_EQ(3, pPlayer->m_vDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_EQ(3, pPlayer->m_setDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pPlayer->m_setDefinitelyNotOwnedCards.find(uiPerson) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_setDefinitelyNotOwnedCards.find(uiPlace) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_setDefinitelyNotOwnedCards.find(uiWeapon) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
 };
 
 TEST_F(PlayerManagerTest, addMultiplePassedGuessWorks)
@@ -99,16 +99,16 @@ TEST_F(PlayerManagerTest, addMultiplePassedGuessWorks)
             uiPlayerPlace,
             uiPlayerWeapon);
     Player* pOtherPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
-    EXPECT_EQ(3, pOtherPlayer->m_vDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_EQ(3, pOtherPlayer->m_setDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pOtherPlayer->m_setDefinitelyNotOwnedCards.find(uiOtherPerson) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_setDefinitelyNotOwnedCards.find(uiOtherPlace) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_setDefinitelyNotOwnedCards.find(uiOtherWeapon) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
 
     Player* pPlayerPlayer = m_playerManager.getPlayer(m_sUserPlayerName);
-    EXPECT_EQ(3, pPlayerPlayer->m_vDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
-    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_EQ(3, pPlayerPlayer->m_setDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pPlayerPlayer->m_setDefinitelyNotOwnedCards.find(uiPlayerPerson) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayerPlayer->m_setDefinitelyNotOwnedCards.find(uiPlayerPlace) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayerPlayer->m_setDefinitelyNotOwnedCards.find(uiPlayerWeapon) != m_otherPlayer.m_setDefinitelyNotOwnedCards.end());
 };
 
 TEST_F(PlayerManagerTest, addSolvedGuessWorks)
@@ -121,10 +121,10 @@ TEST_F(PlayerManagerTest, addSolvedGuessWorks)
             uiPlace,
             uiWeapon);
     Player* pPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
-    EXPECT_EQ(0, pPlayer->m_vOwnedCards.size());
-    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiPerson) == pPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiPlace) == pPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiWeapon) == pPlayer->m_vOwnedCards.end());
+    EXPECT_EQ(0, pPlayer->m_setOwnedCards.size());
+    EXPECT_TRUE(pPlayer->m_setOwnedCards.find(uiPerson) == pPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_setOwnedCards.find(uiPlace) == pPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_setOwnedCards.find(uiWeapon) == pPlayer->m_setOwnedCards.end());
 
     ASSERT_EQ(1, pPlayer->m_lAnsweredGuesses.size());
     EXPECT_TRUE(pPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiPerson);
@@ -150,10 +150,10 @@ TEST_F(PlayerManagerTest, addMultipleSolvedGuessWorks)
             uiPlayerPlace,
             uiPlayerWeapon);
     Player* pOtherPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
-    EXPECT_EQ(0, pOtherPlayer->m_vOwnedCards.size());
-    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherPerson) == pOtherPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherPlace) == pOtherPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherWeapon) == pOtherPlayer->m_vOwnedCards.end());
+    EXPECT_EQ(0, pOtherPlayer->m_setOwnedCards.size());
+    EXPECT_TRUE(pOtherPlayer->m_setOwnedCards.find(uiOtherPerson) == pOtherPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_setOwnedCards.find(uiOtherPlace) == pOtherPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_setOwnedCards.find(uiOtherWeapon) == pOtherPlayer->m_setOwnedCards.end());
 
     ASSERT_EQ(1, pOtherPlayer->m_lAnsweredGuesses.size());
     EXPECT_TRUE(pOtherPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiOtherPerson);
@@ -161,10 +161,10 @@ TEST_F(PlayerManagerTest, addMultipleSolvedGuessWorks)
     EXPECT_TRUE(pOtherPlayer->m_lAnsweredGuesses.front().m_uiWeapon == uiOtherWeapon);
 
     Player* pUserPlayer = m_playerManager.getPlayer(m_sUserPlayerName);
-    EXPECT_EQ(0, pUserPlayer->m_vOwnedCards.size());
-    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerPerson) == pUserPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerPlace) == pUserPlayer->m_vOwnedCards.end());
-    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerWeapon) == pUserPlayer->m_vOwnedCards.end());
+    EXPECT_EQ(0, pUserPlayer->m_setOwnedCards.size());
+    EXPECT_TRUE(pUserPlayer->m_setOwnedCards.find(uiPlayerPerson) == pUserPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pUserPlayer->m_setOwnedCards.find(uiPlayerPlace) == pUserPlayer->m_setOwnedCards.end());
+    EXPECT_TRUE(pUserPlayer->m_setOwnedCards.find(uiPlayerWeapon) == pUserPlayer->m_setOwnedCards.end());
 
     ASSERT_EQ(1, pUserPlayer->m_lAnsweredGuesses.size());
     EXPECT_TRUE(pUserPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiPlayerPerson);

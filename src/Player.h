@@ -40,9 +40,9 @@ public:
 
 	std::string m_sName;
 	unsigned int m_uiHandSize;
-	std::set<uint32_t> m_vOwnedCards;
+	std::set<uint32_t> m_setOwnedCards;
     //TODO: Rename these. You confused yourself. Idjit
-	std::set<uint32_t> m_vDefinitelyNotOwnedCards;
+	std::set<uint32_t> m_setDefinitelyNotOwnedCards;
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 
     bool isSolved() const;

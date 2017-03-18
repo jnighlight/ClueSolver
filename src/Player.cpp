@@ -13,7 +13,7 @@ Player::~Player()
 
 bool Player::isSolved() const
 {
-	return m_vOwnedCards.size() == m_uiHandSize;
+	return m_setOwnedCards.size() == m_uiHandSize;
 }
 
 bool Player::addGuess(const std::vector<uint32_t> &vCards)
@@ -32,19 +32,19 @@ bool Player::addGuess(const std::vector<uint32_t> &vCards)
 
 void Player::addCard(uint32_t uiCardToAdd)
 {
-	m_vOwnedCards.insert(uiCardToAdd);
+	m_setOwnedCards.insert(uiCardToAdd);
 }
 
 bool Player::ownsCard(uint32_t uiCard) const
 {
-	return m_vOwnedCards.find(uiCard) != m_vOwnedCards.end();
+	return m_setOwnedCards.find(uiCard) != m_setOwnedCards.end();
 }
 
 bool Player::ownsOneOfTheseCards(const std::vector<uint32_t> &vCards) const
 {
 	for (uint32_t uiCard : vCards)
 	{
-		if (m_vOwnedCards.find(uiCard) != m_vOwnedCards.end())
+		if (m_setOwnedCards.find(uiCard) != m_setOwnedCards.end())
 		{
 			return true;
 		}
@@ -56,13 +56,13 @@ void Player::addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards)
 {
 	for (uint32_t uiNotOwnedCard : vNotOwnedCards)
 	{
-		m_vDefinitelyNotOwnedCards.insert(uiNotOwnedCard);
+		m_setDefinitelyNotOwnedCards.insert(uiNotOwnedCard);
 	}
 }
 
 bool Player::isDefinitelyNotOwned(uint32_t uiCard)
 {
-	return m_vDefinitelyNotOwnedCards.find(uiCard) != m_vDefinitelyNotOwnedCards.end();
+	return m_setDefinitelyNotOwnedCards.find(uiCard) != m_setDefinitelyNotOwnedCards.end();
 }
 
 //Here we return an internal enum. We could return a bool based on whether we need to remove the

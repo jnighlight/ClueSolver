@@ -16,7 +16,7 @@ void PlayerStatusForDisplay::addPlayer(const Player &player)
 //This method should be in player display
 void PlayerStatusForDisplay::addPlayerCards(const Player &player, PlayerDisplay &playerDisplay)
 {
-    for (uint32_t uiCard : player.m_vOwnedCards) {
+    for (uint32_t uiCard : player.m_setOwnedCards) {
         playerDisplay.m_vOwnedCardNames.push_back(Rules::getCardName(uiCard));
     }
 }
@@ -35,7 +35,7 @@ void PlayerStatusForDisplay::addPlayerGuesses(const Player &player, PlayerDispla
 
 void PlayerStatusForDisplay::addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay)
 {
-    for (uint32_t uiCard : player.m_vDefinitelyNotOwnedCards) {
+    for (uint32_t uiCard : player.m_setDefinitelyNotOwnedCards) {
         playerDisplay.m_vDefinitelyNotOwnedCardNames.push_back(Rules::getCardName(uiCard));
     }
 }
