@@ -58,7 +58,7 @@ Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 	return 0;
 }
 
-bool PlayerManager::isOwned(uint32_t uiCard)
+bool PlayerManager::isOwned(uint32_t uiCard) const
 {
 	if (m_userPlayer.ownsCard(uiCard))
 	{
@@ -75,18 +75,23 @@ bool PlayerManager::isOwned(uint32_t uiCard)
 }
 
 //Returns the number of cards in the guess that AREN'T owned
-uint32_t PlayerManager::removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessCards)
+//Modifies incoming guess to remove cards
+uint32_t PlayerManager::removeOwnedCardsFromGuess(Player::AnsweredGuess &answeredGuess) const
 {
 	uint32_t uiOwned = 0;
-	for (uint32_t i = 0; i < vGuessCards.size(); i++)
-	{
-		if (isOwned(vGuessCards[i]))
-		{
-			vGuessCards[i] = 0;
-			++uiOwned;
-		}
-	}
-	return vGuessCards.size() - uiOwned;
+    if (isOwned(answeredGuess.m_uiPerson)) {
+        answeredGuess.m_uiPerson = 0;
+        ++uiOwned;
+    }
+    if (isOwned(answeredGuess.m_uiPlace)) {
+        answeredGuess.m_uiPlace = 0;
+        ++uiOwned;
+    }
+    if (isOwned(answeredGuess.m_uiWeapon)) {
+        answeredGuess.m_uiWeapon = 0;
+        ++uiOwned;
+    }
+	return 3 - uiOwned;
 }
 
 //Assumes that only one card in the incoming vector is NOT 0
@@ -103,30 +108,23 @@ uint32_t PlayerManager::getOnlyCard(const std::vector<uint32_t> &vGuessCards)
 	return 0;
 }
 
-void PlayerManager::addSolvedGuess(const std::string &sSolver,
-						     uint32_t uiPerson,
-							 uint32_t uiPlace,
-							 uint32_t uiWeapon)
+//Makes a local copy of guess for modification and storage
+void PlayerManager::addSolvedGuess(const Guess &guess)
 {
-	Player* pPlayer = getPlayer(sSolver);
+	Player* pPlayer = getPlayer(guess.m_sStopper);
 	if (!pPlayer) {
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
-	std::vector<uint32_t> vGuessCards = { uiPerson, uiWeapon, uiPlace };
-
+    //Mostly stripping out the Player names and making a local editable copy
+    Player::AnsweredGuess answeredGuess(guess);
 	//If the Solver already owns one of these cards, we CAN'T infer more information from
 	//	the solution of this guess (But we can infer info from who it passed)
-	if (!pPlayer->ownsOneOfTheseCards(vGuessCards) && removeOwnedCardsFromGuess(vGuessCards) != 0) {
-        pPlayer->addGuess(vGuessCards);
-        /*
-         * JUST do this from the engine after every add. We can optimize later
-        bool bSolutionFound = pPlayer->checkForSolutions(this);
-        if (bSolutionFound)
-        {
-            updatePlayerState();
+	if (!pPlayer->ownsOneOfTheseCards(answeredGuess)) {
+        uint32_t uiCardsLeft = removeOwnedCardsFromGuess(answeredGuess);
+        if (uiCardsLeft != 0) {
+            pPlayer->addGuess(answeredGuess);
         }
-        */
     }
 }
 
@@ -158,20 +156,14 @@ bool PlayerManager::isSolved()
     return bIsSolved;
 }
 
-//TODO: make a struct for passing these 3 values along. They can get disordered easily
-void PlayerManager::addPassedGuess(const std::string &sPasser,
-						     uint32_t uiPerson,
-							 uint32_t uiPlace,
-							 uint32_t uiWeapon)
+void PlayerManager::addPassedGuess(const std::string &sPasser, const Guess &guess)
 {
 	Player* pPlayer = getPlayer(sPasser);
 	if (!pPlayer) {
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
-    //TODO: use that struct here. Not a vector. Ew. Cmon man.
-	std::vector<uint32_t> vGuessCards = { uiPerson, uiPlace, uiWeapon };
-	pPlayer->addNotOwnedCards(vGuessCards);
+	pPlayer->addNotOwnedCards(guess);
 }
 
 std::vector<std::string> PlayerManager::getPlayerNames()

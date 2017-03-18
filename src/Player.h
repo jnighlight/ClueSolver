@@ -17,6 +17,11 @@ public:
 			,m_uiPerson(0)
 			,m_uiWeapon(0)
         {};
+		AnsweredGuess(const Guess &guess)
+			:m_uiPlace(guess.m_uiPlace)
+			,m_uiPerson(guess.m_uiPerson)
+			,m_uiWeapon(guess.m_uiWeapon)
+		{};
 		AnsweredGuess(uint32_t uiPerson, uint32_t uiWeapon, uint32_t uiPlace)
 			:m_uiPlace(uiPlace)
 			,m_uiPerson(uiPerson)
@@ -41,14 +46,13 @@ public:
 	std::string m_sName;
 	unsigned int m_uiHandSize;
 	std::set<uint32_t> m_setOwnedCards;
-    //TODO: Rename these. You confused yourself. Idjit
 	std::set<uint32_t> m_setDefinitelyNotOwnedCards;
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 
     bool isSolved() const;
 	void addCard(uint32_t uiCardToAdd);
-	bool addGuess(const std::vector<uint32_t> &vCards);
-	void addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards);
+    bool addGuess(const AnsweredGuess &answeredGuess);
+    void addNotOwnedCards(const Guess &guess);
     bool isDefinitelyNotOwned(uint32_t uiCard);
 	bool checkForSolutions(PlayerManager* pPlayerManager);
 
@@ -61,7 +65,7 @@ public:
     Player::guessState processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
 
 	bool ownsCard(uint32_t uiCard) const;
-	bool ownsOneOfTheseCards(const std::vector<uint32_t> &vCards) const;
+    bool ownsOneOfTheseCards(const AnsweredGuess &answeredGuess) const;
 
 	void setName(std::string sName) { m_sName = sName; };
 	void setHandSize(uint32_t uiHandSize) { m_uiHandSize = uiHandSize; };

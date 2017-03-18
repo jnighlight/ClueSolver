@@ -44,15 +44,9 @@ public:
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
     void updatePlayerState();
     //PlayerStatusDisplay  getPlayerStatusForDisplay();
-	void addSolvedGuess(const std::string &sSolver,
-				  uint32_t uiPerson,
-				  uint32_t uiPlace,
-				  uint32_t uiWeapon);
-	void addPassedGuess(const std::string &sPasser,
-						uint32_t uiPerson,
-						uint32_t uiPlace,
-						uint32_t uiWeapon);
-	bool isOwned(uint32_t uiCard);
+    void addSolvedGuess(const Guess &guess);
+    void addPassedGuess(const std::string &sPasser, const Guess &guess);
+	bool isOwned(uint32_t uiCard) const;
 	void checkForNewSolutions();
     bool isSolved();
     PlayerStatusForDisplay getPlayerStatusForDisplay();
@@ -63,7 +57,7 @@ public:
 	Player* getPlayer(const std::string &sPlayerName);
 
 private:
-	uint32_t removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessCards);
+    uint32_t removeOwnedCardsFromGuess(Player::AnsweredGuess &answeredGuess) const;
 	uint32_t getOnlyCard(const std::vector<uint32_t> &vGuessCards);
 };
 

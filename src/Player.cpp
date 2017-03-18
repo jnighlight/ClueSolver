@@ -16,16 +16,9 @@ bool Player::isSolved() const
 	return m_setOwnedCards.size() == m_uiHandSize;
 }
 
-bool Player::addGuess(const std::vector<uint32_t> &vCards)
+bool Player::addGuess(const AnsweredGuess &answeredGuess)
 {
-	if (vCards.size() != 3)
-	{
-		std::cout << "Player::" << __FUNCTION__ << ", Incoming guess of incorrect size: ";
-		std::cout << vCards.size();
-        return false;
-	}
-
-    Player::AnsweredGuess answeredGuess(vCards.at(0), vCards.at(1), vCards.at(2));
+    //push_back makes a copy. It's a small struct, it's fine
     m_lAnsweredGuesses.push_back(answeredGuess);
     return true;
 }
@@ -40,24 +33,22 @@ bool Player::ownsCard(uint32_t uiCard) const
 	return m_setOwnedCards.find(uiCard) != m_setOwnedCards.end();
 }
 
-bool Player::ownsOneOfTheseCards(const std::vector<uint32_t> &vCards) const
+bool Player::ownsOneOfTheseCards(const AnsweredGuess &answeredGuess) const
 {
-	for (uint32_t uiCard : vCards)
-	{
-		if (m_setOwnedCards.find(uiCard) != m_setOwnedCards.end())
-		{
-			return true;
-		}
-	}
+    if (m_setOwnedCards.find(answeredGuess.m_uiPerson) != m_setOwnedCards.end() || 
+        m_setOwnedCards.find(answeredGuess.m_uiPlace) != m_setOwnedCards.end() || 
+        m_setOwnedCards.find(answeredGuess.m_uiWeapon) != m_setOwnedCards.end())
+    {
+        return true;
+    }
 	return false;
 }
 
-void Player::addNotOwnedCards(const std::vector<uint32_t> &vNotOwnedCards)
+void Player::addNotOwnedCards(const Guess &guess)
 {
-	for (uint32_t uiNotOwnedCard : vNotOwnedCards)
-	{
-		m_setDefinitelyNotOwnedCards.insert(uiNotOwnedCard);
-	}
+    m_setDefinitelyNotOwnedCards.insert(guess.m_uiPerson);
+    m_setDefinitelyNotOwnedCards.insert(guess.m_uiPlace);
+    m_setDefinitelyNotOwnedCards.insert(guess.m_uiWeapon);
 }
 
 bool Player::isDefinitelyNotOwned(uint32_t uiCard)

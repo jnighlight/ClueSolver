@@ -9,6 +9,10 @@ class PlayerTest : public ::testing::Test
             :m_sName("testName")
             ,m_uiHandSize(5)
             ,m_player(m_sName, m_uiHandSize)
+            ,m_uiPlace(1)
+            ,m_uiPerson(2)
+            ,m_uiWeapon(3)
+            ,m_answeredGuess(m_uiPlace, m_uiPerson, m_uiWeapon)
         {
         }
 
@@ -20,6 +24,11 @@ class PlayerTest : public ::testing::Test
         std::string m_sName;
         uint32_t m_uiHandSize;
         Player m_player;
+
+        uint32_t m_uiPlace;
+        uint32_t m_uiPerson;
+        uint32_t m_uiWeapon;
+        Player::AnsweredGuess m_answeredGuess;
 };
 
 TEST_F(PlayerTest, playerOwnsGivenCard)
@@ -30,25 +39,9 @@ TEST_F(PlayerTest, playerOwnsGivenCard)
     EXPECT_FALSE(m_player.ownsCard(11));
 };
 
-TEST_F(PlayerTest, vectorOfWrongSizeCausesAddGuessToFail)
-{
-    std::vector<uint32_t> vCards;
-    vCards.push_back(1);
-    EXPECT_FALSE(m_player.addGuess(vCards));
-    vCards.push_back(2);
-    EXPECT_FALSE(m_player.addGuess(vCards));
-    vCards.push_back(3);
-    vCards.push_back(4);
-    EXPECT_FALSE(m_player.addGuess(vCards));
-};
-
 TEST_F(PlayerTest, addGuessAddsGuess)
 {
-    std::vector<uint32_t> vCards;
-    vCards.push_back(1);
-    vCards.push_back(2);
-    vCards.push_back(3);
-    EXPECT_TRUE(m_player.addGuess(vCards));
+    EXPECT_TRUE(m_player.addGuess(m_answeredGuess));
     EXPECT_EQ(1, m_player.m_lAnsweredGuesses.size());
 };
 
@@ -117,6 +110,16 @@ TEST_F(AnsweredGuessTest, guessesWithSingleCardAreSolved)
 };
 
 TEST_F(AnsweredGuessTest, getSolvedWillReturnSolvedCardIfSolved)
+{
+    EXPECT_EQ(m_uiPlace, m_answeredGuessPlace.getSolved());
+    EXPECT_EQ(m_uiPerson, m_answeredGuessPerson.getSolved());
+    EXPECT_EQ(m_uiWeapon, m_answeredGuessWeapon.getSolved());
+
+    EXPECT_EQ(0, m_answeredGuess.isSolved());
+    EXPECT_EQ(0, m_answeredGuessEmpty.isSolved());
+};
+
+TEST_F(AnsweredGuessTest, processStoredGuess_)
 {
     EXPECT_EQ(m_uiPlace, m_answeredGuessPlace.getSolved());
     EXPECT_EQ(m_uiPerson, m_answeredGuessPerson.getSolved());
