@@ -155,8 +155,7 @@ uint32_t Cli::getValidUserInt()
 
 uint32_t Cli::getPlayerCount()
 {
-    //wprintw(m_statusWin, "Height: , Width: ");
-    mvwprintw(m_textWin, 1, 1, "How many people are playing tonight? : ");
+    wprintw(m_textWin, "How many people are playing tonight? : ");
     refreshWindows();
     std::string sResponse;
 	uint32_t uiPlayerCount = getValidUserInt();
@@ -165,7 +164,6 @@ uint32_t Cli::getPlayerCount()
         refreshWindows();
 		uiPlayerCount = getValidUserInt();
 	}
-
 	return uiPlayerCount;
 }
 

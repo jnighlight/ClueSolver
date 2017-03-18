@@ -6,7 +6,6 @@
 #include "Guess.h"
 #include "PlayerManager.h"
 
-
 Game::Game()
 {
     initscr();
