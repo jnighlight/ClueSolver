@@ -158,6 +158,7 @@ bool PlayerManager::isSolved()
     return bIsSolved;
 }
 
+//TODO: make a struct for passing these 3 values along. They can get disordered easily
 void PlayerManager::addPassedGuess(const std::string &sPasser,
 						     uint32_t uiPerson,
 							 uint32_t uiPlace,
@@ -168,6 +169,7 @@ void PlayerManager::addPassedGuess(const std::string &sPasser,
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
+    //TODO: use that struct here. Not a vector. Ew. Cmon man.
 	std::vector<uint32_t> vGuessCards = { uiPerson, uiPlace, uiWeapon };
 	pPlayer->addNotOwnedCards(vGuessCards);
 }

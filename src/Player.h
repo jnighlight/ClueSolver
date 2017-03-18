@@ -41,6 +41,7 @@ public:
 	std::string m_sName;
 	unsigned int m_uiHandSize;
 	std::set<uint32_t> m_vOwnedCards;
+    //TODO: Rename these. You confused yourself. Idjit
 	std::set<uint32_t> m_vDefinitelyNotOwnedCards;
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
 

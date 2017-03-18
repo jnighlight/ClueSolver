@@ -60,9 +60,9 @@ public:
 
 	Player m_userPlayer;
 	std::vector<Player> m_otherPlayers;
+	Player* getPlayer(const std::string &sPlayerName);
 
 private:
-	Player* getPlayer(const std::string &sPlayerName);
 	uint32_t removeOwnedCardsFromGuess(std::vector<uint32_t> &vGuessCards);
 	uint32_t getOnlyCard(const std::vector<uint32_t> &vGuessCards);
 };

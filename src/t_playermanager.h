@@ -30,6 +30,18 @@ class PlayerManagerTest : public ::testing::Test
         {
         }
 
+        bool vectorContains(const std::vector<uint32_t> &vVector, uint32_t uiToBeFound)
+        {
+            bool bContains = false;
+            for (uint32_t uiUint32 : vVector)
+            {
+                if (uiUint32 == uiToBeFound) {
+                    bContains = true;
+                }
+            }
+            return bContains;
+        }
+
         std::string m_sUserPlayerName;
         std::string m_sOtherPlayerName;
         uint32_t m_uiUserPlayerHandSize;
@@ -55,16 +67,121 @@ TEST_F(PlayerManagerTest, parsePlayerStartStatesWorks)
 
 TEST_F(PlayerManagerTest, addPassedGuessWorks)
 {
+    uint32_t uiPerson = 1;
+    uint32_t uiPlace = 2;
+    uint32_t uiWeapon = 3;
+    m_playerManager.addPassedGuess(m_sOtherPlayerName,
+            uiPerson,
+            uiPlace,
+            uiWeapon);
+    Player* pPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
+    EXPECT_EQ(3, pPlayer->m_vDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_vDefinitelyNotOwnedCards.find(uiWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
 };
 
 TEST_F(PlayerManagerTest, addMultiplePassedGuessWorks)
 {
+    uint32_t uiOtherPerson = 1;
+    uint32_t uiOtherPlace = 2;
+    uint32_t uiOtherWeapon = 3;
+    //Throw in an overlapping "Not Owned" for testing
+    uint32_t uiPlayerPerson = 3;
+    uint32_t uiPlayerPlace = 5;
+    uint32_t uiPlayerWeapon = 6;
+    m_playerManager.addPassedGuess(m_sOtherPlayerName,
+            uiOtherPerson,
+            uiOtherPlace,
+            uiOtherWeapon);
+    m_playerManager.addPassedGuess(m_sUserPlayerName,
+            uiPlayerPerson,
+            uiPlayerPlace,
+            uiPlayerWeapon);
+    Player* pOtherPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
+    EXPECT_EQ(3, pOtherPlayer->m_vDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_vDefinitelyNotOwnedCards.find(uiOtherWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+
+    Player* pPlayerPlayer = m_playerManager.getPlayer(m_sUserPlayerName);
+    EXPECT_EQ(3, pPlayerPlayer->m_vDefinitelyNotOwnedCards.size());
+    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerPerson) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerPlace) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
+    EXPECT_TRUE(pPlayerPlayer->m_vDefinitelyNotOwnedCards.find(uiPlayerWeapon) != m_otherPlayer.m_vDefinitelyNotOwnedCards.end());
 };
 
 TEST_F(PlayerManagerTest, addSolvedGuessWorks)
 {
+    uint32_t uiPerson = 1;
+    uint32_t uiPlace = 2;
+    uint32_t uiWeapon = 3;
+    m_playerManager.addSolvedGuess(m_sOtherPlayerName,
+            uiPerson,
+            uiPlace,
+            uiWeapon);
+    Player* pPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
+    EXPECT_EQ(0, pPlayer->m_vOwnedCards.size());
+    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiPerson) == pPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiPlace) == pPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pPlayer->m_vOwnedCards.find(uiWeapon) == pPlayer->m_vOwnedCards.end());
+
+    ASSERT_EQ(1, pPlayer->m_lAnsweredGuesses.size());
+    EXPECT_TRUE(pPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiPerson);
+    EXPECT_TRUE(pPlayer->m_lAnsweredGuesses.front().m_uiPlace == uiPlace);
+    EXPECT_TRUE(pPlayer->m_lAnsweredGuesses.front().m_uiWeapon == uiWeapon);
 };
 
 TEST_F(PlayerManagerTest, addMultipleSolvedGuessWorks)
 {
+    uint32_t uiOtherPerson = 1;
+    uint32_t uiOtherPlace = 2;
+    uint32_t uiOtherWeapon = 3;
+    //Throw in an overlapping "Not Owned" for testing
+    uint32_t uiPlayerPerson = 3;
+    uint32_t uiPlayerPlace = 5;
+    uint32_t uiPlayerWeapon = 6;
+    m_playerManager.addSolvedGuess(m_sOtherPlayerName,
+            uiOtherPerson,
+            uiOtherPlace,
+            uiOtherWeapon);
+    m_playerManager.addSolvedGuess(m_sUserPlayerName,
+            uiPlayerPerson,
+            uiPlayerPlace,
+            uiPlayerWeapon);
+    Player* pOtherPlayer = m_playerManager.getPlayer(m_sOtherPlayerName);
+    EXPECT_EQ(0, pOtherPlayer->m_vOwnedCards.size());
+    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherPerson) == pOtherPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherPlace) == pOtherPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pOtherPlayer->m_vOwnedCards.find(uiOtherWeapon) == pOtherPlayer->m_vOwnedCards.end());
+
+    ASSERT_EQ(1, pOtherPlayer->m_lAnsweredGuesses.size());
+    EXPECT_TRUE(pOtherPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiOtherPerson);
+    EXPECT_TRUE(pOtherPlayer->m_lAnsweredGuesses.front().m_uiPlace == uiOtherPlace);
+    EXPECT_TRUE(pOtherPlayer->m_lAnsweredGuesses.front().m_uiWeapon == uiOtherWeapon);
+
+    Player* pUserPlayer = m_playerManager.getPlayer(m_sUserPlayerName);
+    EXPECT_EQ(0, pUserPlayer->m_vOwnedCards.size());
+    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerPerson) == pUserPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerPlace) == pUserPlayer->m_vOwnedCards.end());
+    EXPECT_TRUE(pUserPlayer->m_vOwnedCards.find(uiPlayerWeapon) == pUserPlayer->m_vOwnedCards.end());
+
+    ASSERT_EQ(1, pUserPlayer->m_lAnsweredGuesses.size());
+    EXPECT_TRUE(pUserPlayer->m_lAnsweredGuesses.front().m_uiPerson == uiPlayerPerson);
+    EXPECT_TRUE(pUserPlayer->m_lAnsweredGuesses.front().m_uiPlace == uiPlayerPlace);
+    EXPECT_TRUE(pUserPlayer->m_lAnsweredGuesses.front().m_uiWeapon == uiPlayerWeapon);
 };
+
+/*
+TEST_F(PlayerManagerTest, updatePlayerState_solvingGuessCorrectlyAllocatesUnownedCardsToOthers)
+{
+};
+
+TEST_F(PlayerManagerTest, updatePlayerState_solvesGuessWithAllButOneCardOwnedByOthers)
+{
+};
+
+TEST_F(PlayerManagerTest, updatePlayerState_solvesGuessWithAllButOneCardOwnedByOthers)
+{
+};
+*/
