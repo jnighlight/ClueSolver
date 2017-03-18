@@ -28,7 +28,7 @@ void Guess::clear()
 	m_uiWeapon = 0;
 	m_sGuesserName.clear();
 	m_sStopper.clear();
-    m_svPasses.empty();
+    m_svPasses.clear();
 }
 
 void Guess::addCard(uint32_t uiCard, Rules::eCardType eCardType)
