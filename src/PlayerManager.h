@@ -29,7 +29,13 @@ public:
 	struct PlayerStartStates{
 		PlayerStartStates(uint32_t uiNumberOfPlayers)
 			:m_vPlayerStartStates()
-		{};
+		{
+            for (uint32_t i = 0; i < uiNumberOfPlayers-1; i++)
+            {
+                PlayerStartState otherPlayer;
+                m_vPlayerStartStates.push_back(otherPlayer);
+            }
+        };
 
 		PlayerStartState m_userPlayer;
 		uint32_t getUserPlayerHandSize() { return m_userPlayer.m_uiHandSize; };

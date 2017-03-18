@@ -27,12 +27,11 @@ class PlayerManagerTest : public ::testing::Test
             m_playerStartStates.m_userPlayer.setHandSize(m_uiUserPlayerHandSize);
             m_playerStartStates.m_userPlayer.setName(m_sUserPlayerName);
 
-            PlayerManager::PlayerStartState player2StartState(m_uiOtherPlayerHandSize,
-                                                                  m_sPlayer2Name);
-            PlayerManager::PlayerStartState player3StartState(m_uiOtherPlayerHandSize,
-                                                                  m_sPlayer3Name);
-            m_playerStartStates.m_vPlayerStartStates.push_back(player2StartState);
-            m_playerStartStates.m_vPlayerStartStates.push_back(player3StartState);
+            m_playerStartStates.m_vPlayerStartStates.at(0).m_sName = m_sPlayer2Name;
+            m_playerStartStates.m_vPlayerStartStates.at(0).m_uiHandSize = m_uiOtherPlayerHandSize;
+            m_playerStartStates.m_vPlayerStartStates.at(1).m_sName = m_sPlayer3Name;
+            m_playerStartStates.m_vPlayerStartStates.at(1).m_uiHandSize = m_uiOtherPlayerHandSize;
+
             m_playerManager.parsePlayerStartStates(m_playerStartStates);
         }
 
