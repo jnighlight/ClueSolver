@@ -303,6 +303,8 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
     } while (uiGuesser <= 0 || uiGuesser > vPlayerNames.size());
     guess.m_sGuesserName =  vPlayerNames[uiGuesser-1];
 
+    bool bUserGuessed = (uiGuesser == 1);
+
     std::vector<uint32_t> vGuessCards = { 0, 0, 0};
     bool bGotAcceptableCards = false;
     do {
@@ -343,9 +345,44 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
 
     wclear(m_textWin);
     wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
+    guess.m_bUserGuess = false;
+    guess.m_uiUserAnswerRecieved = 0;
     if (uiSolver != 0) {
         guess.m_sStopper = vPlayerNames.at(uiSolver-1);
         wprintw(m_textWin, "Solver: %s\n", guess.m_sStopper.c_str());
+    }
+    if (bUserGuessed) {
+        bool bAcceptable = false;
+        wprintw(m_textWin, "What card did they show you?\n");
+        wprintw(m_textWin, "1. %s\n", Rules::getCardName(guess.m_uiPerson).c_str());
+        wprintw(m_textWin, "2. %s\n", Rules::getCardName(guess.m_uiPlace).c_str());
+        wprintw(m_textWin, "3. %s\n", Rules::getCardName(guess.m_uiWeapon).c_str());
+        wprintw(m_textWin, "Enter 1, 2, or 3: ");
+        uint32_t uiAnsweredCard = 0;
+        do {
+            uiAnsweredCard = getValidUserInt();
+            if (uiAnsweredCard >= 1 && uiAnsweredCard <= 3) {
+                bAcceptable = true;
+            } else {
+                wprintw(m_textWin, "\nThat was not a 1, 2 or 3. Try again: ");
+            }
+        } while (!bAcceptable);
+        guess.m_bUserGuess = true;
+        //TODO: This is nasty. fix it
+        switch(uiAnsweredCard) {
+            case 1 :
+                guess.m_uiUserAnswerRecieved = guess.m_uiPerson;
+                break;
+            case 2 :
+                guess.m_uiUserAnswerRecieved = guess.m_uiPlace;
+                break;
+            case 3 :
+                guess.m_uiUserAnswerRecieved = guess.m_uiWeapon;
+                break;
+            default:
+                //TODO: Error case. Exception?
+                break;
+        }
     }
     wprintw(m_textWin, "Which players passed on the guess?\n");
     listPlayers(vPlayerNames, true);

@@ -116,14 +116,19 @@ void PlayerManager::addSolvedGuess(const Guess &guess)
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
-    //Mostly stripping out the Player names and making a local editable copy
-    Player::AnsweredGuess answeredGuess(guess);
-	//If the Solver already owns one of these cards, we CAN'T infer more information from
-	//	the solution of this guess (But we can infer info from who it passed)
-	if (!pPlayer->ownsOneOfTheseCards(answeredGuess)) {
-        uint32_t uiCardsLeft = removeOwnedCardsFromGuess(answeredGuess);
-        if (uiCardsLeft != 0) {
-            pPlayer->addGuess(answeredGuess);
+    //If the user guessed, we automagically get the card. Awesome!!!
+    if (guess.m_bUserGuess) {
+        pPlayer->addCard(guess.m_uiUserAnswerRecieved);
+    } else {
+        //Mostly stripping out the Player names and making a local editable copy
+        Player::AnsweredGuess answeredGuess(guess);
+        //If the Solver already owns one of these cards, we CAN'T infer more information from
+        //	the solution of this guess (But we can infer info from who it passed)
+        if (!pPlayer->ownsOneOfTheseCards(answeredGuess)) {
+            uint32_t uiCardsLeft = removeOwnedCardsFromGuess(answeredGuess);
+            if (uiCardsLeft != 0) {
+                pPlayer->addGuess(answeredGuess);
+            }
         }
     }
 }

@@ -23,6 +23,8 @@ public:
 	std::string m_sGuesserName;
 	std::string m_sStopper;
 	std::vector<std::string> m_svPasses;
+    bool m_bUserGuess;
+    uint32_t m_uiUserAnswerRecieved;
 
     void addCard(uint32_t uiCard, Rules::eCardType eCardType);
     void clear();
