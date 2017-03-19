@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "PlayerStatusForDisplay.h"
 
+class PlayerStatusForDisplay;
+
 class PlayerManager
 {
 public:

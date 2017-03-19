@@ -1,6 +1,6 @@
 #include "PlayerStatusForDisplay.h"
 
-void PlayerStatusForDisplay::addPlayer(const Player &player)
+void PlayerStatusForDisplay::addPlayer(const Player &player, PlayerManager* pPlayerManager)
 {
     PlayerDisplay playerDisplay;
     playerDisplay.m_sName = player.m_sName;
@@ -8,7 +8,7 @@ void PlayerStatusForDisplay::addPlayer(const Player &player)
 
     addPlayerCards(player, playerDisplay);
     addPlayerGuesses(player, playerDisplay);
-    addPlayerNotOwnedCards(player, playerDisplay);
+    addPlayerNotOwnedCards(player, playerDisplay, pPlayerManager);
 
     m_vPlayerDisplays.push_back(playerDisplay);
 }
@@ -33,9 +33,14 @@ void PlayerStatusForDisplay::addPlayerGuesses(const Player &player, PlayerDispla
     }
 }
 
-void PlayerStatusForDisplay::addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay)
+void PlayerStatusForDisplay::addPlayerNotOwnedCards(const Player &player,
+                                                    PlayerDisplay &playerDisplay,
+                                                    PlayerManager* pPlayerManager)
 {
     for (uint32_t uiCard : player.m_setDefinitelyNotOwnedCards) {
-        playerDisplay.m_vDefinitelyNotOwnedCardNames.push_back(Rules::getCardName(uiCard));
+        //If the card is owned by someone else, it's evident that it's not owned by this player
+        if (!pPlayerManager->isOwned(uiCard)) {
+            playerDisplay.m_vDefinitelyNotOwnedCardNames.push_back(Rules::getCardName(uiCard));
+        }
     }
 }

@@ -14,8 +14,9 @@ PlayerManager::~PlayerManager()
 PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay()
 {
     PlayerStatusForDisplay playerStatusForDisplay;
+    //Only going to display other players. You know your own stuff
     for (Player &otherPlayer : m_otherPlayers) {
-        playerStatusForDisplay.addPlayer(otherPlayer);
+        playerStatusForDisplay.addPlayer(otherPlayer, this);
     }
     return playerStatusForDisplay;
 }
@@ -57,6 +58,7 @@ Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 	return 0;
 }
 
+//TODO: Maybe make this static? It gets called a bit
 bool PlayerManager::isOwned(uint32_t uiCard) const
 {
 	if (m_userPlayer.ownsCard(uiCard))

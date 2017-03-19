@@ -6,6 +6,7 @@
 
 #include "Rules.h"
 #include "Player.h"
+#include "PlayerManager.h"
 
 class PlayerStatusForDisplay
 {
@@ -36,8 +37,8 @@ public:
 	PlayerStatusForDisplay() {};
 	virtual ~PlayerStatusForDisplay() {};
     std::list<PlayerDisplay> m_vPlayerDisplays;
-    void addPlayer(const Player &player);
+    void addPlayer(const Player &player, PlayerManager* pPlayerManager);
     void addPlayerCards(const Player &player, PlayerDisplay &playerDisplay);
     void addPlayerGuesses(const Player &player, PlayerDisplay &playerDisplay);
-    void addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay);
+    void addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay, PlayerManager* pPlayerManager);
 };
