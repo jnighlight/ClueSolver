@@ -49,7 +49,6 @@ public:
 	void parsePlayerStartStates(const PlayerStartStates &playerStartStates);
 	void setUserPlayerCards(const std::vector<uint32_t> &vPlayerCards);
     void updatePlayerState();
-    //PlayerStatusDisplay  getPlayerStatusForDisplay();
     void addSolvedGuess(const Guess &guess);
     void addPassedGuess(const std::string &sPasser, const Guess &guess);
 	bool isOwned(uint32_t uiCard) const;

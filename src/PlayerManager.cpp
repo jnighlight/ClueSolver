@@ -14,7 +14,6 @@ PlayerManager::~PlayerManager()
 PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay()
 {
     PlayerStatusForDisplay playerStatusForDisplay;
-    playerStatusForDisplay.addPlayer(m_userPlayer);
     for (Player &otherPlayer : m_otherPlayers) {
         playerStatusForDisplay.addPlayer(otherPlayer);
     }
