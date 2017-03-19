@@ -130,6 +130,26 @@ bool Rules::isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards)
 	return uiPersonCards == 1 && uiPlaceCards == 1 && uiWeaponCards == 1;
 }
 
+
+Rules::CardTypeRange Rules::getCardTypeRange(Rules::eCardType eCardType)
+{
+    switch (eCardType) {
+        case (ePerson):
+            return Rules::CardTypeRange(1, PEOPLE_CARD_COUNT);
+            break;
+        case (eWeapon):
+            return Rules::CardTypeRange(PEOPLE_CARD_COUNT + 1, WEAPON_CARD_COUNT + PEOPLE_CARD_COUNT);
+            break;
+        case (ePlace):
+            return Rules::CardTypeRange(PEOPLE_CARD_COUNT + WEAPON_CARD_COUNT + 1,
+                                        WEAPON_CARD_COUNT + PEOPLE_CARD_COUNT + PLACE_CARD_COUNT);
+            break;
+        default:
+            break;
+    }
+    return Rules::CardTypeRange();
+}
+
 Rules::Rules()
 {
 }

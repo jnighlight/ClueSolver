@@ -51,7 +51,7 @@ void Player::addNotOwnedCards(const Guess &guess)
     m_setDefinitelyNotOwnedCards.insert(guess.m_uiWeapon);
 }
 
-bool Player::isDefinitelyNotOwned(uint32_t uiCard)
+bool Player::isDefinitelyNotOwned(uint32_t uiCard) const
 {
 	return m_setDefinitelyNotOwnedCards.find(uiCard) != m_setDefinitelyNotOwnedCards.end();
 }

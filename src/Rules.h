@@ -15,7 +15,21 @@ public:
         eWeapon,
         ePlace,
         eUnknownType,
+       };
+
+    struct CardTypeRange {
+        CardTypeRange()
+            :m_uiMin(0)
+            ,m_uiMax(0) {}
+
+        CardTypeRange(uint32_t uiMin, uint32_t uiMax)
+            :m_uiMin(uiMin)
+            ,m_uiMax(uiMax) {}
+
+        uint32_t m_uiMin;
+        uint32_t m_uiMax;
     };
+
 	static const uint32_t PEOPLE_CARD_COUNT;
 	static const uint32_t WEAPON_CARD_COUNT;
 	static const uint32_t PLACE_CARD_COUNT;
@@ -32,4 +46,5 @@ public:
     static bool isPlaceCard(uint32_t uiCard);
     static Rules::eCardType getCardType(uint32_t uiCard);
     static std::string getCardName(uint32_t uiCard);
+    static Rules::CardTypeRange getCardTypeRange(Rules::eCardType eCardType);
 };

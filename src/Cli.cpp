@@ -34,12 +34,6 @@ Cli::Cli()
     wrefresh(m_statusWin);
     wrefresh(m_textWinBorder);
     wrefresh(m_statusWinBorder);
-    /*
-    wprintw(m_statusWin, "Height: %d, Width: %d", y, x);
-    wprintw(m_textWin, "Height: %d, Width: %d", y, x);
-    wrefresh(m_textWin);
-    wrefresh(m_statusWin);
-    */
 }
 
 Cli::~Cli()
@@ -251,7 +245,7 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
                 wprintw(m_statusWin, "%d. -\n", (i + 1));
             }
         }
-        wprintw(m_statusWin, "Not Owned Cards:\n");
+        wprintw(m_statusWin, "Cards not owned by player:\n");
         uint32_t uiNotOwnedCardCount = 0;
         uint32_t uiPerLine = 3;
         for (std::string sCardName : playerDisplay.m_vDefinitelyNotOwnedCardNames) {
@@ -265,7 +259,7 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
             }
         }
         wprintw(m_statusWin, "\n");
-        wprintw(m_statusWin, "Guesses:\n");
+        wprintw(m_statusWin, "Stopped Guesses:\n");
         for (const PlayerStatusForDisplay::GuessDisplay &guessDisplay : playerDisplay.m_vAnsweredGuesses) {
             std::string sPersonCard = Rules::getCardName(guessDisplay.m_uiPersonCard);
             std::string sWeaponCard = Rules::getCardName(guessDisplay.m_uiWeaponCard);
@@ -282,6 +276,22 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
             wprintw(m_statusWin, "\n");
         }
         wprintw(m_statusWin, "\n");
+    }
+    wprintw(m_statusWin, "\n");
+    if (playerStatusForDisplay.hasSolvedValue()) {
+        wprintw(m_statusWin, "SOLVED CARDS: \n");
+        if (playerStatusForDisplay.getSolvedPerson() != 0) {
+            wprintw(m_statusWin, "Person: %s\n",
+                    Rules::getCardName(playerStatusForDisplay.getSolvedPerson()).c_str());
+        }
+        if (playerStatusForDisplay.getSolvedPlace() != 0) {
+            wprintw(m_statusWin, "Place: %s\n",
+                    Rules::getCardName(playerStatusForDisplay.getSolvedPlace()).c_str());
+        }
+        if (playerStatusForDisplay.getSolvedWeapon() != 0) {
+            wprintw(m_statusWin, "Weapon: %s\n",
+                    Rules::getCardName(playerStatusForDisplay.getSolvedWeapon()).c_str());
+        }
     }
     refreshWindows();
 }

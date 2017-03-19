@@ -34,11 +34,45 @@ public:
         std::vector<PlayerStatusForDisplay::GuessDisplay> m_vAnsweredGuesses;
     };
 
-	PlayerStatusForDisplay() {};
+	PlayerStatusForDisplay()
+    :m_uiSolvedPerson(0)
+    ,m_uiSolvedPlace(0)
+    ,m_uiSolvedWeapon(0)
+    ,m_bHasSolvedValue(false)
+    {};
+
 	virtual ~PlayerStatusForDisplay() {};
+
     std::list<PlayerDisplay> m_vPlayerDisplays;
-    void addPlayer(const Player &player, PlayerManager* pPlayerManager);
+
+    void addPlayer(const Player &player, const PlayerManager* pPlayerManager);
     void addPlayerCards(const Player &player, PlayerDisplay &playerDisplay);
     void addPlayerGuesses(const Player &player, PlayerDisplay &playerDisplay);
-    void addPlayerNotOwnedCards(const Player &player, PlayerDisplay &playerDisplay, PlayerManager* pPlayerManager);
+    void addPlayerNotOwnedCards(const Player &player,
+                                PlayerDisplay &playerDisplay,
+                                const PlayerManager* pPlayerManager);
+    void setSolvedPerson(uint32_t uiPerson) {
+        m_uiSolvedPerson = uiPerson;
+        m_bHasSolvedValue = true;
+    };
+    void setSolvedPlace(uint32_t uiPlace)
+    {
+        m_uiSolvedPlace = uiPlace;
+        m_bHasSolvedValue = true;
+    };
+    void setSolvedWeapon(uint32_t uiWeapon)
+    {
+        m_uiSolvedWeapon = uiWeapon;
+        m_bHasSolvedValue = true;
+    };
+
+    uint32_t getSolvedPerson() const { return m_uiSolvedPerson; };
+    uint32_t getSolvedPlace() const { return m_uiSolvedPlace; };
+    uint32_t getSolvedWeapon() const { return m_uiSolvedWeapon; };
+    bool hasSolvedValue() const { return m_bHasSolvedValue; };
+private:
+    uint32_t m_uiSolvedPerson;
+    uint32_t m_uiSolvedPlace;
+    uint32_t m_uiSolvedWeapon;
+    bool m_bHasSolvedValue;
 };

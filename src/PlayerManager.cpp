@@ -11,14 +11,69 @@ PlayerManager::~PlayerManager()
 {
 }
 
-PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay()
+PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay() const
 {
     PlayerStatusForDisplay playerStatusForDisplay;
     //Only going to display other players. You know your own stuff
-    for (Player &otherPlayer : m_otherPlayers) {
+    for (const Player &otherPlayer : m_otherPlayers) {
         playerStatusForDisplay.addPlayer(otherPlayer, this);
     }
+    addAnswerCards(playerStatusForDisplay);
     return playerStatusForDisplay;
+}
+
+void PlayerManager::addAnswerCards(PlayerStatusForDisplay &playerStatusForDisplay) const
+{
+    uint32_t uiSolvedPerson = isTypeSolved(Rules::ePerson);
+    if (uiSolvedPerson != 0) {
+        playerStatusForDisplay.setSolvedPerson(uiSolvedPerson);
+    }
+    uint32_t uiSolvedPlace = isTypeSolved(Rules::ePlace);
+    if (uiSolvedPlace != 0) {
+        playerStatusForDisplay.setSolvedPlace(uiSolvedPlace);
+    }
+    uint32_t uiSolvedWeapon = isTypeSolved(Rules::eWeapon);
+    if (uiSolvedWeapon != 0) {
+        playerStatusForDisplay.setSolvedWeapon(uiSolvedWeapon);
+    }
+}
+
+//Returns then number of the answer card if solved, otherwise 0
+uint32_t PlayerManager::isTypeSolved(Rules::eCardType eCardType) const
+{
+    Rules::CardTypeRange cardTypeRange = Rules::getCardTypeRange(eCardType);
+    uint32_t uiCardsNotOwned = 0;
+    uint32_t uiLatestNotOwned = 0;
+    for (uint32_t i = cardTypeRange.m_uiMin; i <= cardTypeRange.m_uiMax; i++) {
+        //If at any point we can confirm NO ONE owns a card, it has to be in the center
+        if (confirmNoOneOwnsCard(i)) {
+            return i;
+        }
+        if (!isOwned(i)) {
+            ++uiCardsNotOwned;
+            uiLatestNotOwned = i;
+        }
+    }
+    if (uiCardsNotOwned == 1) {
+        return uiLatestNotOwned;
+    }
+    return 0;
+}
+
+bool PlayerManager::confirmNoOneOwnsCard(uint32_t uiCard) const
+{
+    bool bNoOneDefinitelyOwnsIt = true;
+    if (m_userPlayer.ownsCard(uiCard)) {
+        bNoOneDefinitelyOwnsIt = false;
+    }
+    for (const Player &player : m_otherPlayers)
+    {
+        if (!player.isDefinitelyNotOwned(uiCard))
+        {
+            bNoOneDefinitelyOwnsIt = false;
+        }
+    }
+    return bNoOneDefinitelyOwnsIt;
 }
 
 void PlayerManager::parsePlayerStartStates(const PlayerStartStates &playerStartStates)

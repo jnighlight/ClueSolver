@@ -56,7 +56,9 @@ public:
 	bool isOwned(uint32_t uiCard) const;
 	void checkForNewSolutions();
     bool isSolved();
-    PlayerStatusForDisplay getPlayerStatusForDisplay();
+    uint32_t isTypeSolved(Rules::eCardType eCardType) const;
+    bool confirmNoOneOwnsCard(uint32_t uiCard) const;
+    PlayerStatusForDisplay getPlayerStatusForDisplay() const;
     std::vector<std::string> getPlayerNames();
 
 	Player m_userPlayer;
@@ -64,6 +66,7 @@ public:
 	Player* getPlayer(const std::string &sPlayerName);
 
 private:
+    void addAnswerCards(PlayerStatusForDisplay &playerStatusForDisplay) const;
     uint32_t removeOwnedCardsFromGuess(Player::AnsweredGuess &answeredGuess) const;
 	uint32_t getOnlyCard(const std::vector<uint32_t> &vGuessCards);
 };

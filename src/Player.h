@@ -53,7 +53,7 @@ public:
 	void addCard(uint32_t uiCardToAdd);
     bool addGuess(const AnsweredGuess &answeredGuess);
     void addNotOwnedCards(const Guess &guess);
-    bool isDefinitelyNotOwned(uint32_t uiCard);
+    bool isDefinitelyNotOwned(uint32_t uiCard) const;
 	bool checkForSolutions(PlayerManager* pPlayerManager);
 
     enum guessState {
