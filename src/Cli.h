@@ -21,6 +21,7 @@ public:
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
     void getGuess(Guess &guess, std::vector<std::string> vPlayerNames);
     void setStatus(const PlayerStatusForDisplay &playerStatusForDisplay);
+    void showEndScreen();
 private:
 	uint32_t getValidUserInt();
 	void getValidUserString(std::string &sInputString, uint32_t uiMaxChars = 20);

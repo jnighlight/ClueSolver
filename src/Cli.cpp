@@ -417,21 +417,14 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
         }
     } while (!bRealPlayer || !bValidPasser || uiPasser != 0);
 
-    /* --------- These really should be setters and getters -----------*/
-    wprintw(m_textWin, "The guesser!: ");
-    wprintw(m_textWin, guess.m_sGuesserName.c_str());
-    wprintw(m_textWin, "\n");
-    if (uiSolver != 0) {
-        guess.m_sStopper = vPlayerNames[uiSolver-1];
-        wprintw(m_textWin, "The solver!: ");
-        wprintw(m_textWin, guess.m_sStopper.c_str());
-    }
-    wprintw(m_textWin, "The passers!\n");
-    for (uint32_t uiPasser : passers) {
-        guess.m_svPasses.push_back(vPlayerNames[uiPasser - 1]);
-        wprintw(m_textWin, vPlayerNames[uiPasser - 1].c_str());
-        wprintw(m_textWin, "\n");
-    }
+    refreshWindows();
+}
+
+void Cli::showEndScreen()
+{
+    wprintw(m_textWin, "GAME HAS BEEN WON! Congratulations!\n");
+    wprintw(m_textWin, "Game state at end of game can be seen in the status window\n");
+    wprintw(m_textWin, "Press Any Key to end. Thanks for Playing!\n");
     refreshWindows();
     wgetch(m_textWin);
 }

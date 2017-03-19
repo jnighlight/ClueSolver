@@ -45,6 +45,7 @@ void Game::guessLoop()
 		m_cli.getGuess(guess, m_engine.getPlayerNames());
 		bSolved = m_engine.processGuess(guess);
         m_cli.setStatus(m_engine.getPlayerStatus());
-		guess.clear();
+        guess.clear();
 	}
+    m_cli.showEndScreen();
 }
