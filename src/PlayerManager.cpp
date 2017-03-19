@@ -208,13 +208,10 @@ void PlayerManager::updatePlayerState()
 
 bool PlayerManager::isSolved()
 {
-    bool bIsSolved = true;
-    for (const Player& otherPlayer : m_otherPlayers) {
-        if (!otherPlayer.isSolved()) {
-            bIsSolved = false;
-        }
-    }
-    return bIsSolved;
+    uint32_t uiSolvedPerson = isTypeSolved(Rules::ePerson);
+    uint32_t uiSolvedPlace = isTypeSolved(Rules::ePlace);
+    uint32_t uiSolvedWeapon = isTypeSolved(Rules::eWeapon);
+    return uiSolvedPerson != 0 && uiSolvedPlace != 0 && uiSolvedWeapon != 0;
 }
 
 void PlayerManager::addPassedGuess(const std::string &sPasser, const Guess &guess)
