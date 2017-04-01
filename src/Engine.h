@@ -8,6 +8,13 @@
 #include "PlayerManager.h"
 #include "PlayerStatusForDisplay.h"
 
+/**
+ * @brief Class to interface with the internal game state with info from the GUI. The "Model" of MVC
+ *
+ * This is actually a pretty simple class. It mostly feeds info to the PlayerManager. If
+ *  the simulation got more complicated, it may need more, but this is mostly a messenger right now.
+ *  Most of the heavy lifting is done in the Playermanager
+ */
 class Engine
 {
 public:

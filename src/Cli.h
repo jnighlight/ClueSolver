@@ -6,7 +6,7 @@
 #include "PlayerStatusForDisplay.h"
 
 /**
- * @brief The Command Line Interface object, displays data to the user
+ * @brief The Command Line Interface object, displays data to the user. The "View" of MVC
  *
  * This class controls 2 (technically 4) Curses windows to display game state and retrieve
  *  information from the user. It recieves objects and data from the Game object to parses,
