@@ -16,16 +16,18 @@ Cli::Cli()
     ,m_statusWin(0)
 {
     initscr();
+    //This looks a little complicated. Making 2 windows per display section: One for the border
+    //  to be displayed, and a slightly smaller one inside that border for actual text
     int x;
     int y;
     getmaxyx(stdscr, y, x);
-    int screenWid = (x/2);
+    int iScreenWid = (x/2);
 
-    m_textWinBorder =     newwin(y,   screenWid,   0, 0);
-    m_textWin =           newwin(y-2, screenWid-2, 1, 1);
+    m_textWinBorder =     newwin(y,   iScreenWid,   0, 0);
+    m_textWin =           newwin(y-2, iScreenWid-2, 1, 1);
 
-    m_statusWinBorder =   newwin(y,   screenWid,   0, screenWid);
-    m_statusWin =         newwin(y-2, screenWid-2, 1, (screenWid + 1));
+    m_statusWinBorder =   newwin(y,   iScreenWid,   0, iScreenWid);
+    m_statusWin =         newwin(y-2, iScreenWid-2, 1, (iScreenWid + 1));
 
     box(m_textWinBorder, 0, 0);
     box(m_statusWinBorder, 0, 0);
@@ -56,17 +58,17 @@ void Cli::refreshWindows()
 void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 {
 	//Using a set here so I don't have to deal with iterating for a duplicate check each time
-	std::set<uint32_t> vClaimedCards;
+	std::set<uint32_t> claimedCards;
 	for (uint32_t i = 0; i < uiUserCardCount; i++)
 	{
 		uint32_t uiSelection = 0;
 		bool bAccepted = true;
 		do {
             wclear(m_textWin);
-            if (vClaimedCards.size()) {
+            if (claimedCards.size()) {
                 wprintw(m_textWin, "You've Picked: ");
-                for (uint32_t uiCard : vClaimedCards) {
-                    wprintw(m_textWin, "%d, ", uiCard);
+                for (uint32_t uiCard : claimedCards) {
+                    wprintw(m_textWin, "%u, ", uiCard);
                 }
                 wprintw(m_textWin, "\n");
             }
@@ -74,7 +76,7 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
 			uiSelection = pickACard();
 
 			//Don't want any duplicate numbers
-			bAccepted = (vClaimedCards.find(uiSelection) == vClaimedCards.end());
+			bAccepted = (claimedCards.find(uiSelection) == claimedCards.end());
 			if (!bAccepted) {
                 wprintw(m_textWin, "I think you already have claimed that card. Try again...\n");
                 wprintw(m_textWin, "(Hit Any Key to continue)\n");
@@ -82,9 +84,9 @@ void Cli::getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards)
                 wgetch(m_textWin);
 			}
 		} while (!bAccepted);
-		vClaimedCards.insert(uiSelection);
+		claimedCards.insert(uiSelection);
 	}
-	for (uint32_t uiClaimedCard : vClaimedCards)
+	for (uint32_t uiClaimedCard : claimedCards)
 	{
 		vCards.push_back(uiClaimedCard);
 	}
@@ -118,6 +120,8 @@ uint32_t Cli::pickACard()
 
 void Cli::getValidUserString(std::string &sInputString, uint32_t uiMaxChars /* = 20 */)
 {
+    //This looks a little confusing. Basically, I want the input prompt to show up in the text
+    //  window below the last line of text.
     int x;
     int y;
     getyx(m_textWin, y, x);
@@ -136,8 +140,11 @@ uint32_t Cli::getValidUserInt()
 	uint32_t uiUserInt = 0;
 	bool bGoodNumber = false;
 	do {
-        getValidUserString(sUserInput);
+        getValidUserString(sUserInput, 4); //we'll never need a number over 9999. No overflow
         try {
+            //Technically, if they input a negative, it'll wrap here. Since we mostly use this
+            //  as a selector or with a limits check, that's fine. They'll just be out of bounds
+            //  or select an invalid option.
             uiUserInt = std::stoi(sUserInput);
             bGoodNumber = true;
         } catch (std::invalid_argument e) {
@@ -154,14 +161,13 @@ uint32_t Cli::getPlayerCount()
     std::string sResponse;
 	uint32_t uiPlayerCount = getValidUserInt();
 	while (!Rules::validPlayerCount(uiPlayerCount)) {
-        wprintw(m_textWin, "Clue is played with %d to %d players. Try again:",unsigned(Rules::MIN_PLAYERS), unsigned(Rules::MAX_PLAYERS));
+        wprintw(m_textWin, "Clue is played with %u to %u players. Try again:",unsigned(Rules::MIN_PLAYERS), unsigned(Rules::MAX_PLAYERS));
         refreshWindows();
 		uiPlayerCount = getValidUserInt();
 	}
 	return uiPlayerCount;
 }
 
-//Returns the number of cards that a player claimed, so we can keep the running total
 uint32_t Cli::getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, eIsUser bIsUser)
 {
 	std::string sName;
@@ -191,7 +197,6 @@ void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 	do {
 		bool bFirst = true;
 		std::string sName;
-		int result = 0;
 		uint32_t uiCardCount = getSinglePlayerInfo(playerStartState.m_userPlayer, IS_USER);
 		for (PlayerManager::PlayerStartState &playerToPopulate : playerStartState.m_vPlayerStartStates) {
 			uiCardCount += getSinglePlayerInfo(playerToPopulate, IS_OTHER_PLAYER);
@@ -199,8 +204,8 @@ void Cli::getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState)
 		bAcceptable = uiCardCount == (Rules::TOTAL_CARDS - 3);
 		if (!bAcceptable) {
 			wprintw(m_textWin, "I think you made a mistake in your math there...\n");
-			wprintw(m_textWin, "You said that, amongst hands, there were %d cards\n", unsigned(uiCardCount));
-			wprintw(m_textWin, "There are %d cards in this game (3 of which should be hidden, not in any hands).\n", Rules::TOTAL_CARDS);
+			wprintw(m_textWin, "You said that, amongst hands, there were %u cards\n", unsigned(uiCardCount));
+			wprintw(m_textWin, "There are %u cards in this game (3 of which should be hidden, not in any hands).\n", Rules::TOTAL_CARDS);
 			wprintw(m_textWin, "Let's take it from the top.\n");
             wgetch(m_textWin);
             wclear(m_textWin);
@@ -223,7 +228,7 @@ void Cli::listPlayers(std::vector<std::string> vPlayerNames, bool bIncludeNone /
     }
 	for (std::string sPerson: vPlayerNames)
 	{
-		wprintw(m_textWin, "%d. ",uiSelectionCounter);
+		wprintw(m_textWin, "%u. ",uiSelectionCounter);
         wprintw(m_textWin, sPerson.c_str());
 		wprintw(m_textWin, " ");
 		++uiSelectionCounter;
@@ -240,9 +245,9 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
         for (uint32_t i = 0; i < playerDisplay.m_uiCardCount; i++)
         {
             if (i < playerDisplay.m_vOwnedCardNames.size()) {
-                wprintw(m_statusWin, "%d. %s\n", (i + 1), playerDisplay.m_vOwnedCardNames[i].c_str());
+                wprintw(m_statusWin, "%u. %s\n", (i + 1), playerDisplay.m_vOwnedCardNames[i].c_str());
             } else {
-                wprintw(m_statusWin, "%d. -\n", (i + 1));
+                wprintw(m_statusWin, "%u. -\n", (i + 1));
             }
         }
         wprintw(m_statusWin, "Cards not owned by player:\n");
@@ -264,13 +269,13 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
             std::string sPersonCard = Rules::getCardName(guessDisplay.m_uiPersonCard);
             std::string sWeaponCard = Rules::getCardName(guessDisplay.m_uiWeaponCard);
             std::string sPlaceCard = Rules::getCardName(guessDisplay.m_uiPlaceCard);
-            wprintw(m_statusWin, "Person: %d - %s, "
+            wprintw(m_statusWin, "Person: %u - %s, "
                     ,guessDisplay.m_uiPersonCard
                     ,sPersonCard.c_str());
-            wprintw(m_statusWin, "Weapon: %d - %s, "
+            wprintw(m_statusWin, "Weapon: %u - %s, "
                     ,guessDisplay.m_uiWeaponCard
                     ,sWeaponCard.c_str());
-            wprintw(m_statusWin, "Place: %d - %s"
+            wprintw(m_statusWin, "Place: %u - %s"
                     ,guessDisplay.m_uiPlaceCard
                     ,sPlaceCard.c_str());
             wprintw(m_statusWin, "\n");
@@ -296,10 +301,9 @@ void Cli::setStatus(const PlayerStatusForDisplay &playerStatusForDisplay)
     refreshWindows();
 }
 
-//TODO: Try to decouple the UI with the logic for better unit testing
+//TODO: This is by far the nastiest part of this code base. This would be a place for improvement 
 void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
 {
-    //wclear(m_textWin);
     wclear(m_textWin);
     wprintw(m_textWin, "Which player made the guess?\n");
     listPlayers(vPlayerNames);
@@ -344,14 +348,18 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
     wprintw(m_textWin, "Which player solved the guess?\n");
     listPlayers(vPlayerNames, true);
     uint32_t uiSolver = 0;
+    bool bValidNumber = true;
     do {
+        bValidNumber = true;
         uiSolver = getValidUserInt();
         if (uiSolver > vPlayerNames.size()) {
             wprintw(m_textWin, "That was not an option. Try again\n");
+            bValidNumber = false;
         } else if (uiSolver == uiGuesser) {
             wprintw(m_textWin, "The Solver cannot be the Guesser. Try again\n");
+            bValidNumber = false;
         }
-    } while (uiSolver < 0 || uiSolver > (vPlayerNames.size()+1) || uiSolver == uiGuesser);
+    } while (!bValidNumber);
 
     wclear(m_textWin);
     wprintw(m_textWin, "Guesser: %s\n", guess.m_sGuesserName.c_str());
@@ -378,7 +386,6 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
             }
         } while (!bAcceptable);
         guess.m_bUserGuess = true;
-        //TODO: This is nasty. fix it
         switch(uiAnsweredCard) {
             case 1 :
                 guess.m_uiUserAnswerRecieved = guess.m_uiPerson;
@@ -390,7 +397,7 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
                 guess.m_uiUserAnswerRecieved = guess.m_uiWeapon;
                 break;
             default:
-                //TODO: Error case. Exception?
+                wprintw(m_textWin, "ERROR: Answer recieved was not of any type!\n");
                 break;
         }
     }
