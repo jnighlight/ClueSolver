@@ -11,47 +11,44 @@
 class Engine
 {
 public:
-	//This may need to be edited. It may go in the controller for the GUI to draw from/iterate through
-	//Consider alternatives. It's not great to iterate through an enum. Maybe an object list with names and ID's would be
-	//	better? Then we could dynamically create them from a string list. Only thing would be to get them into a hash using
-	//	their getId() method...
-	enum class eCards {
-		SCARLET = 0,
-		MUSTARD,
-		WHITE,
-		GREEN,
-		PEACOCK,
-		PLUM,
-		CANDLESTICK,
-		POISON,
-		ROPE,
-		GLOVES,
-		KNIFE,
-		LEAD_PIPE,
-		REVOLVER,
-		WRENCH,
-		KITCHEN,
-		BALLROOM,
-		CONSERVATORY,
-		BILLIARD_ROOM,
-		LIBRARY,
-		STUDY,
-		HALL,
-		LOUNGE,
-		DINING_ROOM
-	};
 
 	Engine();
 	virtual ~Engine();
+
+    /**
+     * @brief Passes the incoming player info to the internam playerManager
+     *
+     * @param [in]  playerInfo  Incoming PlayerInfo from the CLI to go to the playerManager
+     */
 	void parsePlayerInfo(const PlayerManager::PlayerStartStates &playerInfo);
+    /**
+     * @brief Sets the user player's cards based on the cards in the incoming vector
+     *
+     * @param [in]  vPlayerCards    The vector containing the cards owned by the player character
+     */
 	void setUserCards(const std::vector<uint32_t> &vPlayerCards);
+
+    /**
+     * @brief Takes in a guess and feeds any useful information to the player manager
+     *
+     * @param [in]  guess   The guess coming from the CLI 
+     */
 	bool processGuess(const Guess &guess);
+
+    /**
+     * @brief Retrieves a list of player names from the player manager
+     *
+     * @return A vector populated with the names of the players
+     */
     std::vector<std::string> getPlayerNames();
+
+    /**
+     * @brief Grabs the player status from the player manager to display in the CLI
+     *
+     * @return a PlayerStatusForDisplay to be consumed and displayed by the CLI
+     */
     PlayerStatusForDisplay getPlayerStatus();
 
 private:
-
-	//This is going to be the hash for engine knowledge of card ownership. Easy to look up: Key is Card Id, Value is Player Id (with 0 meaning no ownership)
-	static std::unordered_map<unsigned int, unsigned int> s_mCardOwnership;
 	PlayerManager m_playerManager;
 };

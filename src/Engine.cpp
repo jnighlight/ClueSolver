@@ -1,11 +1,8 @@
 #include "Engine.h"
 
-std::unordered_map<unsigned int, unsigned int> Engine::s_mCardOwnership;
-
 Engine::Engine()
 {
 }
-
 
 Engine::~Engine()
 {
@@ -32,11 +29,11 @@ bool Engine::processGuess(const Guess &guess)
 	{
 		m_playerManager.addPassedGuess(sPassedPlayers, guess);
 	}
+    //If it's not stopped by anyone, the only useful information is who it passed
+    //  (IE if you own 2 of the cards in your guess, and no one stops, the engine will
+    //   register that *NO ONE* owns that card, and will consider it the answer)
 	if (!guess.m_sStopper.empty()) {
 		m_playerManager.addSolvedGuess(guess);
-	} else {
-		//TODO: Have to add case for not solved. IE all answers are EITHER owned by guesser
-		//	OR they are the actual answer. Surely there's some information to be gleaned there?
 	}
 	m_playerManager.updatePlayerState();
     return m_playerManager.isSolved();
