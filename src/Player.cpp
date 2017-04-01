@@ -59,7 +59,7 @@ bool Player::isDefinitelyNotOwned(uint32_t uiCard) const
 //Here we return an internal enum. We could return a bool based on whether we need to remove the
 //  guess or not, but then we wouldn't be able to tell the difference between a trash guess we are
 //  throwing away, and the actual gain of knowledge that requires a recalc
-Player::guessState Player::processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager)
+Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager)
 {
     //TODO: Refactor this. 3 of the same line of code is ew
 	//If I know I own any of these cards, the guess can provide me no more information
@@ -117,7 +117,7 @@ bool Player::checkForSolutions(PlayerManager* pPlayerManager)
 {
     bool bSolutionFound = false;
 	std::list<AnsweredGuess>::iterator i = m_lAnsweredGuesses.begin();
-    Player::guessState processGuessResult  = Player::eTrash;
+    Player::eGuessState processGuessResult  = Player::eTrash;
 	while (i != m_lAnsweredGuesses.end())
 	{
         processGuessResult = processStoredGuess((*i), pPlayerManager);

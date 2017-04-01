@@ -8,15 +8,14 @@
 class Cli
 {
 public:
-    //TODO: Consolidate enum naming convention
-	enum IsUser {
+	enum eIsUser {
 		IS_USER = 0,
 		IS_OTHER_PLAYER
 	};
 	Cli();
 	~Cli();
 	uint32_t getPlayerCount();
-	uint32_t getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, IsUser bIsUser);
+	uint32_t getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, eIsUser bIsUser);
 	void getPlayerInfo(PlayerManager::PlayerStartStates &playerStartState);
 	void getUserCards(uint32_t uiUserCardCount, std::vector<uint32_t> &vCards);
     void getGuess(Guess &guess, std::vector<std::string> vPlayerNames);

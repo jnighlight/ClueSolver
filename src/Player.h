@@ -56,13 +56,13 @@ public:
     bool isDefinitelyNotOwned(uint32_t uiCard) const;
 	bool checkForSolutions(PlayerManager* pPlayerManager);
 
-    enum guessState {
+    enum eGuessState {
         eNotSolved = 0,
         eSolved,
         eTrash
     };
 
-    Player::guessState processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
+    Player::eGuessState processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager);
 
 	bool ownsCard(uint32_t uiCard) const;
     bool ownsOneOfTheseCards(const AnsweredGuess &answeredGuess) const;

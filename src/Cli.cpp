@@ -162,7 +162,7 @@ uint32_t Cli::getPlayerCount()
 }
 
 //Returns the number of cards that a player claimed, so we can keep the running total
-uint32_t Cli::getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, IsUser bIsUser)
+uint32_t Cli::getSinglePlayerInfo(PlayerManager::PlayerStartState &playerStartState, eIsUser bIsUser)
 {
 	std::string sName;
 	std::string sNameQuestion;
