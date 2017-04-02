@@ -9,8 +9,7 @@ const uint32_t Rules::MAX_PLAYERS = 6;
 const uint32_t Rules::MIN_PLAYERS = 3;
 
 const std::vector<std::string> Rules::s_lPeople = { "Scarlet", "Mustard", "White", "Green", "Peacock", "Plum" };
-//const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Poison", "Rope", "Gloves", "Knife", "Lead Pipe", "Revolver", "Wrench" };
-const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Rope", "Knife", "Lead Pipe", "Revolver", "Wrench" };
+const std::vector<std::string> Rules::s_lWeapons = { "Candlestick", "Poison", "Rope", "Gloves", "Knife", "Lead Pipe", "Revolver", "Wrench" };
 const std::vector<std::string> Rules::s_lPlaces= {"Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"};
 const uint32_t Rules::PEOPLE_CARD_COUNT = (Rules::s_lPeople.size());
 const uint32_t Rules::WEAPON_CARD_COUNT = (Rules::s_lWeapons.size());
@@ -75,6 +74,7 @@ std::string Rules::getCardName(uint32_t uiCard)
         default:
             break;
     }
+    //This is intentional. If the card is number 0, it will return an empty string
     return "";
 }
 
@@ -108,9 +108,8 @@ Rules::eCardType Rules::getCardType(uint32_t uiCard)
     } else if (Rules::isPlaceCard(uiCard)) {
         return Rules::ePlace;
     }
-    printw("Rules::getCardType - THIS CARD DON'T FIT YO");
+    printw("Rules::getCardType - ERROR: Unkown card type found: %u! Maybe it's not valid?", uiCard);
     return Rules::eUnknownType;
-    //TODO: throw exception
 }
 
 bool Rules::isOneOfEachCardType(const std::vector<uint32_t> &vGuessCards)
