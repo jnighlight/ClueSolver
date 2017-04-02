@@ -16,11 +16,10 @@ bool Player::isSolved() const
 	return m_setOwnedCards.size() == m_uiHandSize;
 }
 
-bool Player::addGuess(const AnsweredGuess &answeredGuess)
+void Player::addGuess(const AnsweredGuess &answeredGuess)
 {
     //push_back makes a copy. It's a small struct, it's fine
     m_lAnsweredGuesses.push_back(answeredGuess);
-    return true;
 }
 
 void Player::addCard(uint32_t uiCardToAdd)
@@ -35,10 +34,9 @@ bool Player::ownsCard(uint32_t uiCard) const
 
 bool Player::ownsOneOfTheseCards(const AnsweredGuess &answeredGuess) const
 {
-    if (m_setOwnedCards.find(answeredGuess.m_uiPerson) != m_setOwnedCards.end() || 
-        m_setOwnedCards.find(answeredGuess.m_uiPlace) != m_setOwnedCards.end() || 
-        m_setOwnedCards.find(answeredGuess.m_uiWeapon) != m_setOwnedCards.end())
-    {
+    if (ownsCard(answeredGuess.m_uiPerson) || 
+        ownsCard(answeredGuess.m_uiPlace) || 
+        ownsCard(answeredGuess.m_uiWeapon)) {
         return true;
     }
 	return false;
@@ -61,11 +59,8 @@ bool Player::isDefinitelyNotOwned(uint32_t uiCard) const
 //  throwing away, and the actual gain of knowledge that requires a recalc
 Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, PlayerManager* pPlayerManager)
 {
-    //TODO: Refactor this. 3 of the same line of code is ew
 	//If I know I own any of these cards, the guess can provide me no more information
-	if (ownsCard(answeredGuess.m_uiPlace) ||
-		ownsCard(answeredGuess.m_uiPerson) ||
-		ownsCard(answeredGuess.m_uiWeapon))
+	if (ownsOneOfTheseCards(answeredGuess))
 	{
 		return Player::eTrash;
 	}
@@ -103,11 +98,9 @@ Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, Pla
 		addCard(uiSolvedCard);
 		return Player::eSolved;
 	}
-	//(If there are NO cards left, I f***ed up bad somewhere. Why do I have this guess
-	//	if I don't have the card to solve it?)
+    //If there are no cards left, this guess is no longer useful to me. Junk it.
 	if (answeredGuess.isEmpty())
 	{
-		std::cout << "Player::" << __FUNCTION__ << ", Player has empty guess! How'd he get it?\n";
 		return Player::eTrash;
 	}
 	return Player::eNotSolved;
@@ -117,13 +110,14 @@ bool Player::checkForSolutions(PlayerManager* pPlayerManager)
 {
     bool bSolutionFound = false;
 	std::list<AnsweredGuess>::iterator i = m_lAnsweredGuesses.begin();
-    Player::eGuessState processGuessResult  = Player::eTrash;
+    Player::eGuessState eProcessGuessResult = Player::eTrash;
+    //We're gonna be removing while we iterate, so we can't use the fancy foreach syntax
 	while (i != m_lAnsweredGuesses.end())
 	{
-        processGuessResult = processStoredGuess((*i), pPlayerManager);
+        eProcessGuessResult = processStoredGuess((*i), pPlayerManager);
         //Technically, in the solved case, I could not break and just leak to the next
         //  switch statement. I just happen to think that's disgusting.
-        switch (processGuessResult) {
+        switch (eProcessGuessResult) {
             case Player::eNotSolved :
                 i++;
                 break;
@@ -135,14 +129,14 @@ bool Player::checkForSolutions(PlayerManager* pPlayerManager)
                 i = m_lAnsweredGuesses.erase(i);
                 break;
             default:
-                //TODO: Error case. Exception?
+                std::cout << "Player::" << __FUNCTION__ << ", ERROR: Not defined player guess result";
                 break;
         }
 	}
     return bSolutionFound;
 }
 
-//---------------------ANSWERED GUESS METHOD-------------------------
+//---------------------ANSWERED GUESS METHODS-------------------------
 bool Player::AnsweredGuess::isSolved()
 {
 	uint32_t uiStillPresent = 0;

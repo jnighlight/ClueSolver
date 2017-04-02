@@ -197,7 +197,6 @@ void PlayerManager::updatePlayerState()
     //  claiming of the card does not cause another card to be able to be claimed
     do
     {
-        bSolutionFound = false;
         bSolutionFound = m_userPlayer.checkForSolutions(this);
         for (Player &player : m_otherPlayers)
         {

@@ -41,7 +41,7 @@ TEST_F(PlayerTest, playerOwnsGivenCard)
 
 TEST_F(PlayerTest, addGuessAddsGuess)
 {
-    EXPECT_TRUE(m_player.addGuess(m_answeredGuess));
+    m_player.addGuess(m_answeredGuess);
     EXPECT_EQ(1, m_player.m_lAnsweredGuesses.size());
 };
 
