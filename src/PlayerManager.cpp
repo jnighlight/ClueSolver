@@ -112,7 +112,6 @@ Player* PlayerManager::getPlayer(const std::string &sPlayerName)
 	return 0;
 }
 
-//TODO: Maybe make this static? It gets called a bit
 bool PlayerManager::isOwned(uint32_t uiCard) const
 {
 	if (m_userPlayer.ownsCard(uiCard))
@@ -147,7 +146,6 @@ uint32_t PlayerManager::removeOwnedCardsFromGuess(Player::AnsweredGuess &answere
 	return 3 - uiOwned;
 }
 
-//Makes a local copy of guess for modification and storage
 void PlayerManager::addSolvedGuess(const Guess &guess)
 {
 	Player* pPlayer = getPlayer(guess.m_sStopper);

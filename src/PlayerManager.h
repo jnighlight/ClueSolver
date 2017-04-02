@@ -103,6 +103,8 @@ public:
     /**
      * @brief Adds the passed guess to the player that passed it, adding it's cards to their recorded passed cards
      *
+     * Makes a local copy of guess for modification and storage
+     *
      * @param [in]  sPasser The name of the player that passed the card
      * @param [in]  guess   The guess that has been passed
      */
@@ -156,9 +158,9 @@ public:
 
 private:
     /**
-     * @brief Adds the answered cards to the PlayerStatusForDisplay
+     * @brief Adds any solved cards to the PlayerStatusForDisplay
      *
-     * @param [out] playerStatusForDisplay  The playerStatusForDisplay to populate with the answer cards
+     * @param [out] playerStatusForDisplay  The playerStatusForDisplay to populate with any solved cards
      */
     void addAnswerCards(PlayerStatusForDisplay &playerStatusForDisplay) const;
 
