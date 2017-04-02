@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Guess.h"
 
 Guess::Guess()
