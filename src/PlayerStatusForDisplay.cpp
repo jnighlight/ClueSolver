@@ -13,7 +13,6 @@ void PlayerStatusForDisplay::addPlayer(const Player &player, const PlayerManager
     m_vPlayerDisplays.push_back(playerDisplay);
 }
 
-//This method should be in player display
 void PlayerStatusForDisplay::addPlayerCards(const Player &player, PlayerDisplay &playerDisplay)
 {
     for (uint32_t uiCard : player.m_setOwnedCards) {
@@ -21,7 +20,6 @@ void PlayerStatusForDisplay::addPlayerCards(const Player &player, PlayerDisplay 
     }
 }
 
-//This one should be too
 void PlayerStatusForDisplay::addPlayerGuesses(const Player &player, PlayerDisplay &playerDisplay)
 {
     for (const Player::AnsweredGuess &answeredGuess : player.m_lAnsweredGuesses) {
