@@ -37,7 +37,7 @@ void PlayerStatusForDisplay::addPlayerNotOwnedCards(const Player &player,
                                                     PlayerDisplay &playerDisplay,
                                                     const PlayerManager* pPlayerManager)
 {
-    for (uint32_t uiCard : player.m_setDefinitelyNotOwnedCards) {
+    for (uint32_t uiCard : player.m_setPassedCards) {
         //If the card is owned by someone else, it's evident that it's not owned by this player
         if (!pPlayerManager->isOwned(uiCard)) {
             playerDisplay.m_vDefinitelyNotOwnedCardNames.push_back(Rules::getCardName(uiCard));

@@ -107,7 +107,7 @@ TEST_F(UpdateLoopTest, processStoredGuess_zeroesOutCardsOwnedByOthers)
 
 TEST_F(UpdateLoopTest, processStoredGuess_zeroesOutCardsThatArentOwnedByPlayer)
 {
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
     EXPECT_EQ(Player::eNotSolved, m_pPlayer2->processStoredGuess(m_answeredGuess, &m_playerManager));
     EXPECT_EQ(0, m_answeredGuess.m_uiPlace);
     EXPECT_NE(0, m_answeredGuess.m_uiPerson);
@@ -120,7 +120,7 @@ TEST_F(UpdateLoopTest, processStoredGuess_zeroesOutCardsThatArentOwnedByPlayer)
 
 TEST_F(UpdateLoopTest, processStoredGuess_addsSolvedCardToOwnedOfSolvingPlayer)
 {
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
     m_pPlayer3->addCard(m_uiPerson);
     EXPECT_EQ(Player::eSolved, m_pPlayer2->processStoredGuess(m_answeredGuess, &m_playerManager));
     EXPECT_EQ(0, m_answeredGuess.m_uiPlace);
@@ -148,13 +148,13 @@ TEST_F(UpdateLoopTest, processStoredGuess_returnsTrashIfCardEndsUpEmpty)
 /*-----------------------------Player::checkForSolutions tests-------------------------*/
 TEST_F(UpdateLoopTest, checkForSolutions_solvesAllSolveableGuesses)
 {
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPerson);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPerson);
     m_pPlayer2->addGuess(m_answeredGuess);
 
     Player::AnsweredGuess secondSolveableGuess(4,5,6);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(4);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(5);
+    m_pPlayer2->m_setPassedCards.insert(4);
+    m_pPlayer2->m_setPassedCards.insert(5);
     m_pPlayer2->addGuess(secondSolveableGuess);
 
     EXPECT_TRUE(m_pPlayer2->checkForSolutions(&m_playerManager));
@@ -173,13 +173,13 @@ TEST_F(UpdateLoopTest, checkForSolutions_removesAllSolvedAndTrashGuesses)
     m_pPlayer3->addCard(11);
     m_pPlayer3->addCard(12);
 
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPerson);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPerson);
     m_pPlayer2->addGuess(m_answeredGuess);
 
     Player::AnsweredGuess secondSolveableGuess(4,5,6);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(4);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(5);
+    m_pPlayer2->m_setPassedCards.insert(4);
+    m_pPlayer2->m_setPassedCards.insert(5);
     m_pPlayer2->addGuess(secondSolveableGuess);
 
     Player::AnsweredGuess trashGuess(0,0,0);
@@ -210,13 +210,13 @@ TEST_F(UpdateLoopTest, checkForSolutions_returnsTrueOnlyIfSolutionsAreFound)
     m_pPlayer3->addCard(11);
     m_pPlayer3->addCard(12);
 
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPerson);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPerson);
     m_pPlayer2->addGuess(m_answeredGuess);
 
     Player::AnsweredGuess secondSolveableGuess(4,5,6);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(4);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(5);
+    m_pPlayer2->m_setPassedCards.insert(4);
+    m_pPlayer2->m_setPassedCards.insert(5);
     m_pPlayer2->addGuess(secondSolveableGuess);
 
     //Parseing through options that cause solutions
@@ -259,8 +259,8 @@ TEST_F(UpdateLoopTest, checkForSolutions_leavesUnsolvedGuessesAlone)
     m_pPlayer3->addCard(11);
     m_pPlayer3->addCard(12);
 
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPlace);
-    m_pPlayer2->m_setDefinitelyNotOwnedCards.insert(m_uiPerson);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPlace);
+    m_pPlayer2->m_setPassedCards.insert(m_uiPerson);
     m_pPlayer2->addGuess(m_answeredGuess);
 
     Player::AnsweredGuess unsolvedGuessWithChangedValue(10,20,30);

@@ -14,7 +14,7 @@ PlayerManager::~PlayerManager()
 PlayerStatusForDisplay PlayerManager::getPlayerStatusForDisplay() const
 {
     PlayerStatusForDisplay playerStatusForDisplay;
-    //Only going to display other players. You know your own stuff
+    //Only going to display other players. The user knows their own cards
     for (const Player &otherPlayer : m_otherPlayers) {
         playerStatusForDisplay.addPlayer(otherPlayer, this);
     }
@@ -68,7 +68,7 @@ bool PlayerManager::confirmNoOneOwnsCard(uint32_t uiCard) const
     }
     for (const Player &player : m_otherPlayers)
     {
-        if (!player.isDefinitelyNotOwned(uiCard))
+        if (!player.hasBeenPassedOn(uiCard))
         {
             bNoOneDefinitelyOwnsIt = false;
         }
@@ -220,7 +220,7 @@ void PlayerManager::addPassedGuess(const std::string &sPasser, const Guess &gues
 		std::cout << "PlayerManager::" << __FUNCTION__ << ", No player returned.";
 		return;
 	}
-	pPlayer->addNotOwnedCards(guess);
+	pPlayer->addPassedCards(guess);
 }
 
 std::vector<std::string> PlayerManager::getPlayerNames()

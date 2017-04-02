@@ -42,16 +42,16 @@ bool Player::ownsOneOfTheseCards(const AnsweredGuess &answeredGuess) const
 	return false;
 }
 
-void Player::addNotOwnedCards(const Guess &guess)
+void Player::addPassedCards(const Guess &guess)
 {
-    m_setDefinitelyNotOwnedCards.insert(guess.m_uiPerson);
-    m_setDefinitelyNotOwnedCards.insert(guess.m_uiPlace);
-    m_setDefinitelyNotOwnedCards.insert(guess.m_uiWeapon);
+    m_setPassedCards.insert(guess.m_uiPerson);
+    m_setPassedCards.insert(guess.m_uiPlace);
+    m_setPassedCards.insert(guess.m_uiWeapon);
 }
 
-bool Player::isDefinitelyNotOwned(uint32_t uiCard) const
+bool Player::hasBeenPassedOn(uint32_t uiCard) const
 {
-	return m_setDefinitelyNotOwnedCards.find(uiCard) != m_setDefinitelyNotOwnedCards.end();
+	return m_setPassedCards.find(uiCard) != m_setPassedCards.end();
 }
 
 //Here we return an internal enum. We could return a bool based on whether we need to remove the
@@ -79,15 +79,15 @@ Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, Pla
 	}
     //If I know for a fact that I don't own this card (I've passed on a guess with it in it),
     //  I can remove that from the guess as well
-	if (isDefinitelyNotOwned(answeredGuess.m_uiPlace))
+	if (hasBeenPassedOn(answeredGuess.m_uiPlace))
 	{
 		answeredGuess.m_uiPlace = 0;
 	}
-	if (isDefinitelyNotOwned(answeredGuess.m_uiPerson))
+	if (hasBeenPassedOn(answeredGuess.m_uiPerson))
 	{
 		answeredGuess.m_uiPerson = 0;
 	}
-	if (isDefinitelyNotOwned(answeredGuess.m_uiWeapon))
+	if (hasBeenPassedOn(answeredGuess.m_uiWeapon))
 	{
 		answeredGuess.m_uiWeapon = 0;
 	}

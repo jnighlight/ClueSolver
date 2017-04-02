@@ -93,10 +93,10 @@ TEST_F(PlayerManagerTest, addPassedGuessWorks)
     m_playerManager.addPassedGuess(m_sPlayer2Name, m_guess);
 
     Player* pPlayer = m_playerManager.getPlayer(m_sPlayer2Name);
-    EXPECT_EQ(3, pPlayer->m_setDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(setContains(pPlayer->m_setDefinitelyNotOwnedCards, m_uiPerson));
-    EXPECT_TRUE(setContains(pPlayer->m_setDefinitelyNotOwnedCards, m_uiPlace));
-    EXPECT_TRUE(setContains(pPlayer->m_setDefinitelyNotOwnedCards, m_uiWeapon));
+    EXPECT_EQ(3, pPlayer->m_setPassedCards.size());
+    EXPECT_TRUE(setContains(pPlayer->m_setPassedCards, m_uiPerson));
+    EXPECT_TRUE(setContains(pPlayer->m_setPassedCards, m_uiPlace));
+    EXPECT_TRUE(setContains(pPlayer->m_setPassedCards, m_uiWeapon));
 };
 
 TEST_F(PlayerManagerTest, addMultiplePassedGuessWorks)
@@ -118,17 +118,17 @@ TEST_F(PlayerManagerTest, addMultiplePassedGuessWorks)
 
     Player* pPlayer2 = m_playerManager.getPlayer(m_sPlayer2Name);
     ASSERT_TRUE(pPlayer2);
-    EXPECT_EQ(3, pPlayer2->m_setDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(setContains(pPlayer2->m_setDefinitelyNotOwnedCards, m_uiPerson));
-    EXPECT_TRUE(setContains(pPlayer2->m_setDefinitelyNotOwnedCards, m_uiPlace));
-    EXPECT_TRUE(setContains(pPlayer2->m_setDefinitelyNotOwnedCards, m_uiWeapon));
+    EXPECT_EQ(3, pPlayer2->m_setPassedCards.size());
+    EXPECT_TRUE(setContains(pPlayer2->m_setPassedCards, m_uiPerson));
+    EXPECT_TRUE(setContains(pPlayer2->m_setPassedCards, m_uiPlace));
+    EXPECT_TRUE(setContains(pPlayer2->m_setPassedCards, m_uiWeapon));
 
     Player* pPlayer3 = m_playerManager.getPlayer(m_sPlayer3Name);
     ASSERT_TRUE(pPlayer3);
-    EXPECT_EQ(3, pPlayer3->m_setDefinitelyNotOwnedCards.size());
-    EXPECT_TRUE(setContains(pPlayer3->m_setDefinitelyNotOwnedCards, m_uiPerson));
-    EXPECT_TRUE(setContains(pPlayer3->m_setDefinitelyNotOwnedCards, uiPlayer3Place));
-    EXPECT_TRUE(setContains(pPlayer3->m_setDefinitelyNotOwnedCards, uiPlayer3Weapon));
+    EXPECT_EQ(3, pPlayer3->m_setPassedCards.size());
+    EXPECT_TRUE(setContains(pPlayer3->m_setPassedCards, m_uiPerson));
+    EXPECT_TRUE(setContains(pPlayer3->m_setPassedCards, uiPlayer3Place));
+    EXPECT_TRUE(setContains(pPlayer3->m_setPassedCards, uiPlayer3Weapon));
 };
 
 TEST_F(PlayerManagerTest, addSolvedGuessWorks)

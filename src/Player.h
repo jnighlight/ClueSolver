@@ -72,8 +72,8 @@ public:
     /** The set of cards the player owns */
 	std::set<uint32_t> m_setOwnedCards;
 
-    /** The set of cards the player definitely does not own */
-	std::set<uint32_t> m_setDefinitelyNotOwnedCards;
+    /** The set of cards the player has passed on (therefore, does not own) */
+	std::set<uint32_t> m_setPassedCards;
 
     /** The list of guesses the player has answered that we haven't solved yet */
 	std::list<AnsweredGuess> m_lAnsweredGuesses;
@@ -104,10 +104,10 @@ public:
      *
      * @param [in]  guess   The guess containing the cards the player definitely does not own
      */
-    void addNotOwnedCards(const Guess &guess);
+    void addPassedCards(const Guess &guess);
 
     /**
-     * @brief If player definitely does not own the card
+     * @brief If player has passed this card (IE, definitely doesn't own it)
      *
      * A sort of "GOTCHA" here is that the not owned status of a card is NOT updated if the card
      *  is claimed by another player.
@@ -120,7 +120,7 @@ public:
      * @param [in]  uiCard  The card the player may or may not own
      * @return True if the player definitely does not own the card
      */
-    bool isDefinitelyNotOwned(uint32_t uiCard) const;
+    bool hasBeenPassedOn(uint32_t uiCard) const;
 
     /**
      * @brief Checks for possible solutions for this player, may modify the cards that this player
