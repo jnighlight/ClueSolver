@@ -424,6 +424,10 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
         }
     } while (!bRealPlayer || !bValidPasser || uiPasser != 0);
 
+    for (uint32_t uiPasser : passers) {
+        guess.m_svPasses.push_back(vPlayerNames[uiPasser - 1]);
+    }
+
     refreshWindows();
 }
 
