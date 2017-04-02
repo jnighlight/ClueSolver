@@ -57,7 +57,7 @@ void Guess::addCard(uint32_t uiCard, Rules::eCardType eCardType)
             m_uiPlace = uiCard;
             break;
         default:
-            //TODO: Throw exception
+            std::cout << "Guess::" << __FUNCTION__ << ", ERROR: card type not defined!";
             break;
     };
 }
