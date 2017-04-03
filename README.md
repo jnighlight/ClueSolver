@@ -8,6 +8,8 @@ This project uses ncurses as a CLI and gtest for testing. If you'd like to compi
 Gtest: http://stackoverflow.com/questions/13513905/how-to-setup-googletest-as-a-shared-library-on-linux
 NCurses:https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora/
 
+Then, simply navigate to the /src/ dir and either "make" or "make test" to generate the "ClueSolver" binary or the "gtest" binary for testing.
+
 The following are screenshots showing the user interface:
 
 
