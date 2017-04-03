@@ -91,6 +91,19 @@ Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, Pla
 	{
 		answeredGuess.m_uiWeapon = 0;
 	}
+    //If we know the answer in the center, we can eliminate that from all guesses.
+    uint32_t uiSolvedPlace = pPlayerManager->isTypeSolved(Rules::ePlace);
+    if (uiSolvedPlace != 0) {
+		answeredGuess.m_uiPlace = 0;
+    }
+    uint32_t uiSolvedPerson = pPlayerManager->isTypeSolved(Rules::ePerson);
+    if (uiSolvedPerson != 0) {
+		answeredGuess.m_uiPerson = 0;
+    }
+    uint32_t uiSolvedWeapon = pPlayerManager->isTypeSolved(Rules::eWeapon);
+    if (uiSolvedWeapon != 0) {
+		answeredGuess.m_uiWeapon = 0;
+    }
 	//Finally, if there's only one card left in the guess, ITS MINE!!! YES!
 	if (answeredGuess.isSolved())
 	{

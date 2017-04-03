@@ -156,6 +156,15 @@ public:
 	std::vector<Player> m_otherPlayers;
 	Player* getPlayer(const std::string &sPlayerName);
 
+    /**
+     * @brief Checks to see if a card category has been solved
+     *
+     * @param [in]  eCardType   The card type that may or may not be solved
+     *
+     * @return The number of the answer card if solved, otherwise returns 0
+     */
+    uint32_t isTypeSolved(Rules::eCardType eCardType) const;
+
 private:
     /**
      * @brief Adds any solved cards to the PlayerStatusForDisplay
@@ -172,14 +181,5 @@ private:
      * @return The number of cards left that are NOT owned in the answeredGuess
      */
     uint32_t removeOwnedCardsFromGuess(Player::AnsweredGuess &answeredGuess) const;
-
-    /**
-     * @brief Checks to see if a card category has been solved
-     *
-     * @param [in]  eCardType   The card type that may or may not be solved
-     *
-     * @return The number of the answer card if solved, otherwise returns 0
-     */
-    uint32_t isTypeSolved(Rules::eCardType eCardType) const;
 };
 
