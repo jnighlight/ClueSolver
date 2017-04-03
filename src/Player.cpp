@@ -64,46 +64,30 @@ Player::eGuessState Player::processStoredGuess(AnsweredGuess &answeredGuess, Pla
 	{
 		return Player::eTrash;
 	}
+
 	//If someone ELSE owns any of these cards, zero them out
-	if (pPlayerManager->isOwned(answeredGuess.m_uiPlace))
+	if (pPlayerManager->isOwned(answeredGuess.m_uiPlace)
+            //If I know for a fact that I don't own this card (I've passed on a guess with it in it),
+            //  I can remove that from the guess as well
+            || hasBeenPassedOn(answeredGuess.m_uiPlace)
+            //If we know this card is in the center, it can't be in this player's hand
+            || pPlayerManager->isTypeSolved(Rules::ePlace) == answeredGuess.m_uiPlace)
 	{
 		answeredGuess.m_uiPlace = 0;
 	}
-	if (pPlayerManager->isOwned(answeredGuess.m_uiPerson))
+	if (pPlayerManager->isOwned(answeredGuess.m_uiPerson)
+            || hasBeenPassedOn(answeredGuess.m_uiPerson)
+            || pPlayerManager->isTypeSolved(Rules::ePerson) == answeredGuess.m_uiPerson)
 	{
 		answeredGuess.m_uiPerson = 0;
 	}
-	if (pPlayerManager->isOwned(answeredGuess.m_uiWeapon))
+	if (pPlayerManager->isOwned(answeredGuess.m_uiWeapon)
+            || hasBeenPassedOn(answeredGuess.m_uiWeapon)
+            || pPlayerManager->isTypeSolved(Rules::eWeapon) == answeredGuess.m_uiWeapon)
 	{
 		answeredGuess.m_uiWeapon = 0;
 	}
-    //If I know for a fact that I don't own this card (I've passed on a guess with it in it),
-    //  I can remove that from the guess as well
-	if (hasBeenPassedOn(answeredGuess.m_uiPlace))
-	{
-		answeredGuess.m_uiPlace = 0;
-	}
-	if (hasBeenPassedOn(answeredGuess.m_uiPerson))
-	{
-		answeredGuess.m_uiPerson = 0;
-	}
-	if (hasBeenPassedOn(answeredGuess.m_uiWeapon))
-	{
-		answeredGuess.m_uiWeapon = 0;
-	}
-    //If we know the answer in the center, we can eliminate that from all guesses.
-    uint32_t uiSolvedPlace = pPlayerManager->isTypeSolved(Rules::ePlace);
-    if (uiSolvedPlace != 0) {
-		answeredGuess.m_uiPlace = 0;
-    }
-    uint32_t uiSolvedPerson = pPlayerManager->isTypeSolved(Rules::ePerson);
-    if (uiSolvedPerson != 0) {
-		answeredGuess.m_uiPerson = 0;
-    }
-    uint32_t uiSolvedWeapon = pPlayerManager->isTypeSolved(Rules::eWeapon);
-    if (uiSolvedWeapon != 0) {
-		answeredGuess.m_uiWeapon = 0;
-    }
+
 	//Finally, if there's only one card left in the guess, ITS MINE!!! YES!
 	if (answeredGuess.isSolved())
 	{
