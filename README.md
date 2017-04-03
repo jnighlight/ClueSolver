@@ -8,10 +8,10 @@ NCurses:https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-d
 
 The following are screenshots showing the user interface:
 
-![Alt text](http://imgur.com/JCZBXuo "Lets start the game!")
-![Alt text](http://imgur.com/AQohXlM "The start state")
-![Alt text](http://imgur.com/KSicWZD "You've made a guess!")
-![Alt text](http://imgur.com/4pwH0Ty "The guesses are stacking up!")
-![Alt text](http://imgur.com/wXoQeMy "Oh, the weapon answer is: Candlestick!")
-![Alt text](http://imgur.com/Yq5O9Sl "Mr Green is the murderer? OH NO!")
-![Alt text](http://imgur.com/3MNxI2N "We've Solved the case!")
+![Lets start the game!](http://imgur.com/JCZBXuo.png "Lets start the game!")
+![The start state](http://imgur.com/AQohXlM.png "The start state")
+![You've made a guess!](http://imgur.com/KSicWZD.png "You've made a guess!")
+![The guesses are stacking up!](http://imgur.com/4pwH0Ty.png "The guesses are stacking up!")
+![Oh, the weapon answer is: Candlestick!](http://imgur.com/wXoQeMy.png "Oh, the weapon answer is: Candlestick!")
+![Mr Green is the murderer? OH NO!](http://imgur.com/Yq5O9Sl.png "Mr Green is the murderer? OH NO!")
+![We've Solved the case!](http://imgur.com/3MNxI2N.png "We've Solved the case!")
