@@ -368,37 +368,38 @@ void Cli::getGuess(Guess &guess, std::vector<std::string> vPlayerNames)
     if (uiSolver != 0) {
         guess.m_sStopper = vPlayerNames.at(uiSolver-1);
         wprintw(m_textWin, "Solver: %s\n", guess.m_sStopper.c_str());
-    }
-    if (bUserGuessed) {
-        bool bAcceptable = false;
-        wprintw(m_textWin, "What card did they show you?\n");
-        wprintw(m_textWin, "1. %s\n", Rules::getCardName(guess.m_uiPerson).c_str());
-        wprintw(m_textWin, "2. %s\n", Rules::getCardName(guess.m_uiPlace).c_str());
-        wprintw(m_textWin, "3. %s\n", Rules::getCardName(guess.m_uiWeapon).c_str());
-        wprintw(m_textWin, "Enter 1, 2, or 3: ");
-        uint32_t uiAnsweredCard = 0;
-        do {
-            uiAnsweredCard = getValidUserInt();
-            if (uiAnsweredCard >= 1 && uiAnsweredCard <= 3) {
-                bAcceptable = true;
-            } else {
-                wprintw(m_textWin, "\nThat was not a 1, 2 or 3. Try again: ");
+
+        if (bUserGuessed) {
+            bool bAcceptable = false;
+            wprintw(m_textWin, "What card did they show you?\n");
+            wprintw(m_textWin, "1. %s\n", Rules::getCardName(guess.m_uiPerson).c_str());
+            wprintw(m_textWin, "2. %s\n", Rules::getCardName(guess.m_uiPlace).c_str());
+            wprintw(m_textWin, "3. %s\n", Rules::getCardName(guess.m_uiWeapon).c_str());
+            wprintw(m_textWin, "Enter 1, 2, or 3: ");
+            uint32_t uiAnsweredCard = 0;
+            do {
+                uiAnsweredCard = getValidUserInt();
+                if (uiAnsweredCard >= 1 && uiAnsweredCard <= 3) {
+                    bAcceptable = true;
+                } else {
+                    wprintw(m_textWin, "\nThat was not a 1, 2 or 3. Try again: ");
+                }
+            } while (!bAcceptable);
+            guess.m_bUserGuess = true;
+            switch(uiAnsweredCard) {
+                case 1 :
+                    guess.m_uiUserAnswerRecieved = guess.m_uiPerson;
+                    break;
+                case 2 :
+                    guess.m_uiUserAnswerRecieved = guess.m_uiPlace;
+                    break;
+                case 3 :
+                    guess.m_uiUserAnswerRecieved = guess.m_uiWeapon;
+                    break;
+                default:
+                    wprintw(m_textWin, "ERROR: Answer recieved was not of any type!\n");
+                    break;
             }
-        } while (!bAcceptable);
-        guess.m_bUserGuess = true;
-        switch(uiAnsweredCard) {
-            case 1 :
-                guess.m_uiUserAnswerRecieved = guess.m_uiPerson;
-                break;
-            case 2 :
-                guess.m_uiUserAnswerRecieved = guess.m_uiPlace;
-                break;
-            case 3 :
-                guess.m_uiUserAnswerRecieved = guess.m_uiWeapon;
-                break;
-            default:
-                wprintw(m_textWin, "ERROR: Answer recieved was not of any type!\n");
-                break;
         }
     }
     wprintw(m_textWin, "Which players passed on the guess?\n");
