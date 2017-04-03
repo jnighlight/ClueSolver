@@ -1,5 +1,6 @@
 # ClueSolver
 A C++ CLI project to help you keep track of any given clue game and have an absolute answer in the shortest amount of time possible.
+**Annoy your friends! Win the game! Never be asked to hang out again! CLUE SOLVER!**
 
 This project uses ncurses as a CLI and gtest for testing. If you'd like to compile this on your local machine, you must first install the ncurses library and the gtest library. Here are instructions in case you don't know how.
 
